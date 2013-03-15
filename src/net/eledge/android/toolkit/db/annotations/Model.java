@@ -6,9 +6,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface Column {
-
-	String name() default "";
+@Target(ElementType.TYPE)
+public @interface Model {
 	
+	int version();
+	
+	String name();
+	
+	Class<?>[] entities();
+
 }
