@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="niy">Deze functie is nog niet geïmplementeerd&#8230;</string>
+    <string name="androidToolkit_niy">Deze functie is nog niet geïmplementeerd&#8230;</string>
     
 </resources>

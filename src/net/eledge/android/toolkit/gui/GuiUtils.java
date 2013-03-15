@@ -14,7 +14,7 @@ public class GuiUtils {
 	}
 	
 	public static void notImplementedYet(Context context) {
-		toast(context, R.string.niy);
+		toast(context, R.string.androidToolkit_niy);
 	}
 	
 	public static void startTopActivity(Context context, Class<? extends Activity> clazz) {
