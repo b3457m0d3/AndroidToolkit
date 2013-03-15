@@ -1,4 +1,4 @@
-package net.eledge.android.toolkit;
+package net.eledge.android.toolkit.gui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 public class GuiUtils {
 
-	public static void showNotImplemented(Context context, int text) {
+	public static void toast(Context context, int text) {
 		Toast.makeText(context, text,
 				Toast.LENGTH_SHORT).show();
 	}
@@ -24,13 +24,6 @@ public class GuiUtils {
 //        indicator.setText(textRes);
 //        return indicator;
 //    }
-
-    public static String pad(int c) {
-        if (c >= 10)
-            return String.valueOf(c);
-        else
-            return "0" + String.valueOf(c);
-    }
     
     public static String getString(Context context, int resId) {
        return context.getResources().getString(resId);

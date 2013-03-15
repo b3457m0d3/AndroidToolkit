@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import net.eledge.android.toolkit.net.JsonUtils.JsonLoadedListener;
+import net.eledge.android.toolkit.net.abstracts.JsonLoadedListener;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
