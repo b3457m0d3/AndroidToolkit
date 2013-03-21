@@ -33,6 +33,11 @@ public class SQLBuilder {
 		return sb.toString();
 	}
 	
+	public static String[] update(Class<?> clazz, int oldVersion, int newVersion) {
+		// TODO
+		return new String[]{};
+	}
+	
 	public static String findById(Class<?> clazz) {
 		StringBuilder sb = new StringBuilder(findAll(clazz));
 		sb.append(" WHERE ").append(getIdField(clazz)).append(" = ?");

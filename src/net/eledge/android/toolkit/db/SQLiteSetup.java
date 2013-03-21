@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class SQLiteSetup extends SQLiteOpenHelper {
-	
+
 	public SQLiteSetup(Context context, Class<? extends SQLiteSetup> clazz) {
 		super(context, clazz.getAnnotation(Model.class).name(), null, clazz.getAnnotation(Model.class).version());
 	}
@@ -21,8 +21,18 @@ public class SQLiteSetup extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
-		
+		db.beginTransaction();
+		try {
+			for (Class<?> clazz : getModel()) {
+				String[] updates = SQLBuilder.update(clazz, oldVersion, newVersion);
+				for (String update : updates) {
+					db.execSQL(update);
+                }
+			}
+			db.setTransactionSuccessful();
+		} finally {
+			db.endTransaction();
+		}
 	}
 
 	public int getModelVersion() {
@@ -32,5 +42,5 @@ public class SQLiteSetup extends SQLiteOpenHelper {
 	public Class<?>[] getModel() {
 		return this.getClass().getAnnotation(Model.class).entities();
 	}
-	
+
 }
