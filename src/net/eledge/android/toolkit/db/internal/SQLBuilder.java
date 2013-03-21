@@ -3,10 +3,11 @@ package net.eledge.android.toolkit.db.internal;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 import net.eledge.android.toolkit.StringUtils;
-import net.eledge.android.toolkit.db.annotations.Column;
-import net.eledge.android.toolkit.db.annotations.Entity;
-import net.eledge.android.toolkit.db.annotations.Id;
 
 public class SQLBuilder {
 

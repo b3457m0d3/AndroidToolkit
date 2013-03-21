@@ -4,8 +4,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+
 import net.eledge.android.toolkit.StringUtils;
-import net.eledge.android.toolkit.db.annotations.Column;
 import net.eledge.android.toolkit.db.internal.FieldType;
 import net.eledge.android.toolkit.db.internal.SQLBuilder;
 import android.content.ContentValues;
