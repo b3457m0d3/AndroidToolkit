@@ -24,7 +24,7 @@ public class SQLiteSetup extends SQLiteOpenHelper {
 		db.beginTransaction();
 		try {
 			for (Class<?> clazz : getModel()) {
-				String[] updates = SQLBuilder.update(clazz, oldVersion, newVersion);
+				String[] updates = SQLBuilder.update(db, clazz, oldVersion, newVersion);
 				for (String update : updates) {
 					db.execSQL(update);
                 }

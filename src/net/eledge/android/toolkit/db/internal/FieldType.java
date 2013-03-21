@@ -13,7 +13,7 @@ public enum FieldType {
 	INTEGER("INTEGER") {
 		@Override
 		public void convertToField(Object instance, Field field, Cursor cursor, int columnIndex)
-				throws IllegalArgumentException, IllegalAccessException {
+		        throws IllegalArgumentException, IllegalAccessException {
 			int i = cursor.getInt(columnIndex);
 			if (field.getType().isPrimitive()) {
 				field.setInt(instance, i);
@@ -21,15 +21,28 @@ public enum FieldType {
 				field.set(instance, Integer.valueOf(i));
 			}
 		}
+
 		@Override
 		public Long toLong(Object instance, Field field) throws IllegalArgumentException, IllegalAccessException {
 			return Long.valueOf(field.getInt(instance));
+		}
+
+		@Override
+		public String defaultValue(Object instance, Field field) {
+			try {
+				Long l = toLong(instance, field);
+				if (l != null) {
+					return l.toString();
+				}
+			} catch (Exception e) {
+			}
+			return "0";
 		}
 	},
 	LONG("INTEGER") {
 		@Override
 		public void convertToField(Object instance, Field field, Cursor cursor, int columnIndex)
-				throws IllegalArgumentException, IllegalAccessException {
+		        throws IllegalArgumentException, IllegalAccessException {
 			long l = cursor.getInt(columnIndex);
 			if (field.getType().isPrimitive()) {
 				field.setLong(instance, l);
@@ -37,15 +50,28 @@ public enum FieldType {
 				field.set(instance, Long.valueOf(l));
 			}
 		}
+
 		@Override
 		public Long toLong(Object instance, Field field) throws IllegalArgumentException, IllegalAccessException {
 			return Long.valueOf(field.getInt(instance));
+		}
+
+		@Override
+		public String defaultValue(Object instance, Field field) {
+			try {
+				Long l = toLong(instance, field);
+				if (l != null) {
+					return l.toString();
+				}
+			} catch (Exception e) {
+			}
+			return "0";
 		}
 	},
 	BOOLEAN("INTEGER") {
 		@Override
 		public void convertToField(Object instance, Field field, Cursor cursor, int columnIndex)
-				throws IllegalArgumentException, IllegalAccessException {
+		        throws IllegalArgumentException, IllegalAccessException {
 			boolean b = cursor.getInt(columnIndex) == 1;
 			if (field.getType().isPrimitive()) {
 				field.setBoolean(instance, b);
@@ -59,18 +85,29 @@ public enum FieldType {
 			boolean b = field.getBoolean(instance);
 			return b ? "1" : "0";
 		}
+
+		@Override
+		public String defaultValue(Object instance, Field field) {
+			try {
+				return toString(instance, field);
+			} catch (Exception e) {
+			}
+			return "0";
+		}
 	},
 	ENUM("TEXT") {
 		@Override
 		public void convertToField(Object instance, Field field, Cursor cursor, int columnIndex)
-				throws IllegalArgumentException, IllegalAccessException {
+		        throws IllegalArgumentException, IllegalAccessException {
 			String value = cursor.getString(columnIndex);
-			Class<?> enumClass = field.getType();
-			try {
-				Method method = enumClass.getMethod("valueOf", String.class);
-				field.set(instance, method.invoke(enumClass, value));
-			} catch (Exception e) {
-				// ignore
+			if (StringUtils.isNotEmpty(value)) {
+				Class<?> enumClass = field.getType();
+				try {
+					Method method = enumClass.getMethod("valueOf", String.class);
+					field.set(instance, method.invoke(enumClass, value));
+				} catch (Exception e) {
+					// ignore
+				}
 			}
 		}
 	},
@@ -83,7 +120,7 @@ public enum FieldType {
 	}
 
 	public void convertToField(Object instance, Field field, Cursor cursor, int columnIndex)
-			throws IllegalArgumentException, IllegalAccessException {
+	        throws IllegalArgumentException, IllegalAccessException {
 		field.set(instance, cursor.getString(columnIndex));
 	}
 
@@ -94,9 +131,17 @@ public enum FieldType {
 		}
 		return null;
 	}
-	
+
 	public Long toLong(Object instance, Field field) throws IllegalArgumentException, IllegalAccessException {
 		return null;
+	}
+
+	public String defaultValue(Object instance, Field field) {
+		try {
+			return toString(instance, field);
+		} catch (Exception e) {
+		}
+		return "\"\"";
 	}
 
 	public static FieldType getType(Class<?> clazz) {
