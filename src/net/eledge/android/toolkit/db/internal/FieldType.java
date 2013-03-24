@@ -138,10 +138,13 @@ public enum FieldType {
 
 	public String defaultValue(Object instance, Field field) {
 		try {
-			return toString(instance, field);
+			StringBuilder sb = new StringBuilder("'");
+			sb.append(toString(instance, field));
+			sb.append("'");
+			return sb.toString();
 		} catch (Exception e) {
 		}
-		return "\"\"";
+		return "''";
 	}
 
 	public static FieldType getType(Class<?> clazz) {
