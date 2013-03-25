@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Id;
 
+import net.eledge.android.toolkit.StringArrayUtils;
 import net.eledge.android.toolkit.StringUtils;
 import net.eledge.android.toolkit.db.annotations.ModelUpdate;
 import net.eledge.android.toolkit.db.annotations.ModelUpdates;
@@ -41,19 +42,19 @@ public class TableBuilder {
 	}
 
 	public String[] update(Class<?> clazz, int oldVersion, int newVersion) {
-		List<String> updates = new ArrayList<String>();
-		if (doesTableExists(clazz)) {
-			updates.add(create(clazz));
-		} else {
-			updates.addAll(createTableUpdates(clazz));
-		}
 		SparseArray<List<String>> versionUpdates = new SparseArray<List<String>>();
+		versionUpdates.put(-1, new ArrayList<String>());
 		for (int i = oldVersion + 1; i <= newVersion; i++) {
 			versionUpdates.put(i, new ArrayList<String>());
 		}
+		if (doesTableExists(clazz)) {
+			versionUpdates.get(-1).add(create(clazz));
+		} else {
+			versionUpdates.get(-1).addAll(createTableUpdates(clazz));
+		}
 		collectTableUpdatesAnnotations(versionUpdates, clazz);
 		collectFieldUpdatesAnnotations(versionUpdates, clazz);
-		return updates.toArray(new String[updates.size()]);
+		return StringArrayUtils.toStringArray(versionUpdates);
 	}
 
 	private String createFieldDef(Class<?> clazz, Field field) {
