@@ -19,7 +19,7 @@ public class JsonLoaderTask extends AsyncTask<String, Void, JSONObject> {
 
 	private JsonLoadedListener mListener;
 
-	private int mHttpStatus;
+	private int mHttpStatus = HttpStatus.SC_INTERNAL_SERVER_ERROR;
 
 	public JsonLoaderTask(JsonLoadedListener listener) {
 		mListener = listener;
