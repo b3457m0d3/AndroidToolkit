@@ -8,16 +8,19 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 
 import net.eledge.android.toolkit.StringUtils;
+import net.eledge.android.toolkit.db.annotations.ModelUpdate;
+import net.eledge.android.toolkit.db.annotations.ModelUpdates;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.SparseArray;
 
 public class TableBuilder {
-	
+
 	private SQLiteDatabase db;
-	
+
 	public TableBuilder(SQLiteDatabase db) {
-	    this.db = db;
-    }
+		this.db = db;
+	}
 
 	public String create(Class<?> clazz) {
 		StringBuilder sb = new StringBuilder("CREATE TABLE ");
@@ -42,24 +45,17 @@ public class TableBuilder {
 		if (doesTableExists(clazz)) {
 			updates.add(create(clazz));
 		} else {
-			/*	
-			StringBuilder sb = new StringBuilder("ALTER TABLE ");
-			sb.append(getTableName(clazz));
-			sb.append(" (");
-			for (Field field : clazz.getFields()) {
-				if (field.isAnnotationPresent(Column.class)) {
-					int columnIndex = cursor.getColumnIndex(SQLBuilder.getFieldName(field));
-					if (columnIndex == -1) {
-						// add new column...
-					}
-				}
-			}
-	*/		// TODO
-			
+			updates.addAll(createTableUpdates(clazz));
 		}
+		SparseArray<List<String>> versionUpdates = new SparseArray<List<String>>();
+		for (int i = oldVersion + 1; i <= newVersion; i++) {
+			versionUpdates.put(i, new ArrayList<String>());
+		}
+		collectTableUpdatesAnnotations(versionUpdates, clazz);
+		collectFieldUpdatesAnnotations(versionUpdates, clazz);
 		return updates.toArray(new String[updates.size()]);
 	}
-	
+
 	private String createFieldDef(Class<?> clazz, Field field) {
 		FieldType type = FieldType.getType(clazz);
 		Column column = field.getAnnotation(Column.class);
@@ -84,11 +80,74 @@ public class TableBuilder {
 		}
 		return sb.toString();
 	}
-	
-	public boolean doesTableExists(Class<?> clazz) {
+
+	public List<String> createTableUpdates(Class<?> clazz) {
+		List<String> updates = new ArrayList<String>();
+		final List<String> names = getExistingFields(clazz);
+		for (Field field : clazz.getFields()) {
+			if (field.isAnnotationPresent(Column.class)) {
+				String name = SQLBuilder.getFieldName(field);
+				if (!names.contains(name)) {
+					StringBuilder sb = new StringBuilder("ALTER TABLE ");
+					sb.append(SQLBuilder.getTableName(clazz));
+					sb.append(" ADD COLUMN ");
+					sb.append(createFieldDef(clazz, field));
+					sb.append(";");
+					updates.add(sb.toString());
+				}
+			}
+		}
+		return updates;
+	}
+
+	private void collectTableUpdatesAnnotations(SparseArray<List<String>> versionUpdates, Class<?> clazz) {
+		if (clazz.isAnnotationPresent(ModelUpdate.class)) {
+			addUpdateIfNeeded(versionUpdates, clazz.getAnnotation(ModelUpdate.class));
+		} else if (clazz.isAnnotationPresent(ModelUpdates.class)) {
+			ModelUpdates updates = clazz.getAnnotation(ModelUpdates.class);
+			for (ModelUpdate update: updates.value()) {
+				addUpdateIfNeeded(versionUpdates, update);
+			}
+		}
+	}
+
+	private void collectFieldUpdatesAnnotations(SparseArray<List<String>> versionUpdates, Class<?> clazz) {
+		for (Field field : clazz.getFields()) {
+			if (field.isAnnotationPresent(ModelUpdate.class)) {
+				addUpdateIfNeeded(versionUpdates, field.getAnnotation(ModelUpdate.class));
+			} else if (field.isAnnotationPresent(ModelUpdates.class)) {
+				ModelUpdates updates = field.getAnnotation(ModelUpdates.class);
+				for (ModelUpdate update: updates.value()) {
+					addUpdateIfNeeded(versionUpdates, update);
+				}
+			}
+		}
+	}
+
+	private void addUpdateIfNeeded(SparseArray<List<String>> versionUpdates, ModelUpdate update) {
+		if (versionUpdates.get(update.version()) != null) {
+			versionUpdates.get(update.version()).add(update.sql());
+		}
+	}
+
+	private boolean doesTableExists(Class<?> clazz) {
 		final String query = "SELECT name FROM sqlite_master WHERE type='table' AND name = ?;";
-		Cursor cursor = db.rawQuery(query, new String[]{SQLBuilder.getTableName(clazz)});
+		Cursor cursor = db.rawQuery(query, new String[] { SQLBuilder.getTableName(clazz) });
 		return cursor.getCount() == 1;
 	}
-	
+
+	private List<String> getExistingFields(Class<?> clazz) {
+		List<String> names = new ArrayList<String>();
+		StringBuilder sb = new StringBuilder("pragma table_info(");
+		sb.append(SQLBuilder.getTableName(clazz));
+		sb.append(");");
+		Cursor cursor = db.rawQuery(sb.toString(), new String[] { SQLBuilder.getTableName(clazz) });
+		if ((cursor != null) && cursor.moveToFirst()) {
+			do {
+				names.add(cursor.getString(1));
+			} while (cursor.moveToNext());
+		}
+		return names;
+	}
+
 }
