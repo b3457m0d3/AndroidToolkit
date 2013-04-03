@@ -2,23 +2,20 @@ package net.eledge.android.toolkit;
 
 import java.util.Locale;
 
+import android.text.TextUtils;
+
 public class StringUtils {
-	
+
 	public static boolean isEmpty(String s) {
-		if (s != null) {
-			if (!"".equals(s.trim())) {
-				return false;
-			}
-		}
-		return true;
+		return TextUtils.isEmpty(s);
 	}
 	
 	public static boolean isNotEmpty(String s) {
-		return !isEmpty(s);
+		return !TextUtils.isEmpty(s);
 	}
 	
 	public static String defaultValue(String s, String def) {
-		return isEmpty(s)?def:s;
+		return TextUtils.isEmpty(s)?def:s;
 	}
 	
 	public static boolean contains(String s, String... values) {
