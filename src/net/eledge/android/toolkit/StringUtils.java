@@ -18,6 +18,13 @@ public class StringUtils {
 		return TextUtils.isEmpty(s)?def:s;
 	}
 	
+	public static boolean equalsIgnoreCase(String s1, String s2) {
+		if ( (s1 == null) || (s2 == null) ) {
+			return false;
+		}
+		return TextUtils.equals(s1.toLowerCase(Locale.ENGLISH), s2.toLowerCase(Locale.ENGLISH));
+	}
+	
 	public static boolean contains(String s, String... values) {
 		if (isNotEmpty(s)) {
 			for (String value : values) {
