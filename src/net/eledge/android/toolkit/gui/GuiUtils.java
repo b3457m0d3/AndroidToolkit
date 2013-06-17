@@ -13,6 +13,11 @@ public class GuiUtils {
 				Toast.LENGTH_SHORT).show();
 	}
 	
+	public static void toast(Context context, String text) {
+		Toast.makeText(context, text,
+				Toast.LENGTH_SHORT).show();
+	}
+	
 	public static void notImplementedYet(Context context) {
 		toast(context, R.string.androidToolkit_niy);
 	}
