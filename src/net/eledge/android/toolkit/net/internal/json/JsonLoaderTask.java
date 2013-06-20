@@ -1,10 +1,10 @@
-package net.eledge.android.toolkit.net.internal;
+package net.eledge.android.toolkit.net.internal.json;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import net.eledge.android.toolkit.net.abstracts.JsonLoadedListener;
+import net.eledge.android.toolkit.net.abstracts.AsyncLoaderListener;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -17,11 +17,11 @@ import android.os.AsyncTask;
 
 public class JsonLoaderTask extends AsyncTask<String, Void, JSONObject> {
 
-	private JsonLoadedListener mListener;
+	private AsyncLoaderListener<JSONObject> mListener;
 
 	private int mHttpStatus = HttpStatus.SC_INTERNAL_SERVER_ERROR;
 
-	public JsonLoaderTask(JsonLoadedListener listener) {
+	public JsonLoaderTask(AsyncLoaderListener<JSONObject> listener) {
 		mListener = listener;
 	}
 
@@ -49,11 +49,7 @@ public class JsonLoaderTask extends AsyncTask<String, Void, JSONObject> {
 
 	@Override
 	protected void onPostExecute(JSONObject json) {
-		if (json != null) {
-			mListener.onLoadingFinished(json);
-		} else {
-			mListener.onLoadingFailed(mHttpStatus);
-		}
+		mListener.onFinished(json, mHttpStatus);
 	}
 
 }
