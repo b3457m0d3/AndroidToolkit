@@ -14,6 +14,18 @@ public class StringUtils {
 		return !TextUtils.isEmpty(s);
 	}
 	
+	public static boolean isBlank(String s) {
+		boolean isEmpty = isEmpty(s);
+		if (!isEmpty) {
+			isEmpty = isEmpty(s.trim());
+		}
+		return isEmpty;
+	}
+	
+	public static boolean isNotBlank(String s) {
+		return !isBlank(s);
+	}
+	
 	public static String defaultValue(String s, String def) {
 		return TextUtils.isEmpty(s)?def:s;
 	}
@@ -26,7 +38,7 @@ public class StringUtils {
 	}
 	
 	public static boolean contains(String s, String... values) {
-		if (isNotEmpty(s)) {
+		if (StringUtils.isNotEmpty(s)) {
 			for (String value : values) {
 				if (s.toLowerCase(Locale.ENGLISH).contains(value.toLowerCase(Locale.ENGLISH))) {
 					return true;
@@ -35,7 +47,7 @@ public class StringUtils {
 		}
 		return false;
 	}
-
+	
 	public static String trimToNull(String s) {
 		if (isNotEmpty(s)) {
 			return s.trim();
