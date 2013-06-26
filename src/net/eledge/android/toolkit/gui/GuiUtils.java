@@ -28,13 +28,6 @@ public class GuiUtils {
 		context.startActivity(intent);
 	}
 	
-//    public static View buildIndicator(TabActivity activity, int textRes) {
-//        final TextView indicator = (TextView) activity.getLayoutInflater().inflate(R.layout.tab_indicator,
-//        		activity.getTabWidget(), false);
-//        indicator.setText(textRes);
-//        return indicator;
-//    }
-    
     public static String getString(Context context, int resId) {
        return context.getResources().getString(resId);
     }
