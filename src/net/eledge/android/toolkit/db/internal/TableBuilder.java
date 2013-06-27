@@ -54,7 +54,7 @@ public class TableBuilder {
 		}
 		collectTableUpdatesAnnotations(versionUpdates, clazz);
 		collectFieldUpdatesAnnotations(versionUpdates, clazz);
-		return StringArrayUtils.toStringArray(versionUpdates);
+		return StringArrayUtils.toArray(versionUpdates);
 	}
 
 	private String createFieldDef(Class<?> clazz, Field field) {
