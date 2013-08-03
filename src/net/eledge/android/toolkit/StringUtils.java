@@ -66,7 +66,7 @@ public class StringUtils {
 			return "0" + String.valueOf(c);
 	}
 
-	public static String join(String[] array) {
+	public static String join(String... array) {
 		if ((array != null) && (array.length > 0)) {
 			StringBuilder sb = new StringBuilder();
 			for (String s : array) {
