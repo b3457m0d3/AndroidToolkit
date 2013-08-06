@@ -14,20 +14,28 @@ import org.json.JSONObject;
 
 public class JsonParser<T> {
 	
-	private final Class<T> domainClazz;
+	private final Class<T> jsonClazz;
 	
-	private final Map<String, Field> methodCache = new HashMap<String, Field>();
+	private final Map<String, Field> fieldCache = new HashMap<String, Field>();
 	
 	public JsonParser(Class<T> clazz) {
-		domainClazz = clazz;
-		scanDomainClass();
+		jsonClazz = clazz;
+		scanJsonClass();
 	}
 	
 	public void parseToObject(JSONObject json, T target) throws JSONException {
-		parseToObject(json, "", target);
+		try {
+			parseToObject(json, "", target);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	private void parseToObject(JSONObject json, String path, T target) throws JSONException {
+	private void parseToObject(JSONObject json, String path, T target) throws JSONException, IllegalArgumentException, IllegalAccessException {
 		@SuppressWarnings("unchecked")
 		Iterator<String> keys = json.keys();
         while( keys.hasNext() ){
@@ -40,11 +48,18 @@ public class JsonParser<T> {
 			}
 			if (o instanceof JSONArray) {
 				parseToObject((JSONArray)o, itempath, target);
+				continue;
+			}
+			if (fieldCache.containsKey(itempath)) {
+				Field field = fieldCache.get(itempath);
+				if ( field.getDeclaringClass() == String.class) {
+					field.set(target, json.getString(key));
+				}
 			}
 		}
 	}
 
-	private void parseToObject(JSONArray jsonArray, String path, T target) throws JSONException {
+	private void parseToObject(JSONArray jsonArray, String path, T target) throws JSONException, IllegalArgumentException, IllegalAccessException {
         String itempath = StringUtils.join(path, "[]");
         if (jsonArray.length() > 0) {
         	for (int i=0; i<jsonArray.length(); i++) {
@@ -56,10 +71,10 @@ public class JsonParser<T> {
         }
 	}
 	
-	private void scanDomainClass() {
-		for (Field field : domainClazz.getFields()) {
+	private void scanJsonClass() {
+		for (Field field : jsonClazz.getFields()) {
 			if (field.isAnnotationPresent(JsonField.class)) {
-				methodCache.put(getFieldName(field), field);
+				fieldCache.put(getFieldName(field), field);
 			}
 		}
 	}
