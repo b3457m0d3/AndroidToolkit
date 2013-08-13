@@ -70,7 +70,7 @@ public enum FieldConvertor {
 			throws IllegalArgumentException, IllegalAccessException, JSONException;
 
 	public static FieldConvertor getConvertor(Field field) {
-		Class<?> clazz = field.getClass();
+		Class<?> clazz = field.getType();
 		if (clazz.isEnum()) {
 			return ENUM;
 		}

@@ -42,8 +42,9 @@ public class JsonParser<T> {
 					continue;
 				}
 				if (o instanceof JSONArray) {
-					parseToObject((JSONArray) o, itempath, target);
-					continue;
+					if (parseToObject((JSONArray) o, itempath, target)) {
+						continue;
+					}
 				}
 				if (fieldCache.containsKey(itempath)) {
 					Field field = fieldCache.get(itempath);
@@ -62,16 +63,20 @@ public class JsonParser<T> {
 		}
 	}
 
-	private void parseToObject(JSONArray jsonArray, String path, T target) throws JsonParserException {
-		String itempath = StringUtils.join(path, "[]");
+	private boolean parseToObject(JSONArray jsonArray, String path, T target) throws JsonParserException {
 		if (jsonArray.length() > 0) {
-			for (int i = 0; i < jsonArray.length(); i++) {
-				JSONObject o = jsonArray.optJSONObject(i);
-				if (o != null) {
-					parseToObject(o, itempath, target);
+			if (jsonArray.optJSONObject(0) != null) {
+				String itempath = StringUtils.join(path, "[]");
+				for (int i = 0; i < jsonArray.length(); i++) {
+					JSONObject o = jsonArray.optJSONObject(i);
+					if (o != null) {
+						parseToObject(o, itempath, target);
+					}
 				}
+				return true;
 			}
 		}
+		return false;
 	}
 
 	private void scanJsonClass() {
