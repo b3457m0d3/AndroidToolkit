@@ -10,5 +10,7 @@ import java.lang.annotation.Target;
 public @interface JsonField {
 	
 	String value() default "";
+	
+	String enumMethod() default "";
 
 }
