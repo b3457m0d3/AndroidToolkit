@@ -24,6 +24,18 @@ public enum FieldConvertor {
 			}
 		}
 	},
+	BOOLEAN(Boolean.class, boolean.class) {
+		@Override
+		public void setFieldValue(Field field, Object target, JSONObject json, String key)
+				throws IllegalArgumentException, IllegalAccessException, JSONException {
+			boolean value = json.getBoolean(key);
+			if (field.getClass().equals(Long.class)) {
+				field.set(target, Boolean.valueOf(value));
+			} else {
+				field.setBoolean(target, value);
+			}
+		}
+	},
 	STRING(String.class) {
 		@Override
 		public void setFieldValue(Field field, Object target, JSONObject json, String key)

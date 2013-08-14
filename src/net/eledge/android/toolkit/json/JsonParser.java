@@ -30,12 +30,13 @@ public class JsonParser<T> {
 	}
 
 	private void parseToObject(JSONObject json, String path, T target) throws JsonParserException {
+		String itempath = path;
 		try {
 			@SuppressWarnings("unchecked")
 			Iterator<String> keys = json.keys();
 			while (keys.hasNext()) {
 				String key = keys.next();
-				String itempath = StringUtils.isNotBlank(path) ? StringUtils.join(path, ".", key) : key;
+				itempath = StringUtils.isNotBlank(path) ? StringUtils.join(path, ".", key) : key;
 				Object o = json.get(key);
 				if (o instanceof JSONObject) {
 					parseToObject((JSONObject) o, itempath, target);
@@ -55,11 +56,11 @@ public class JsonParser<T> {
 				}
 			}
 		} catch (JSONException e) {
-			throw new JsonParserException("JSONException while parsing. Path:" + path, e);
+			throw new JsonParserException("JSONException while parsing. Path:" + itempath, e);
 		} catch (IllegalArgumentException e) {
-			throw new JsonParserException("IllegalArgumentException while parsing. Path:" + path, e);
+			throw new JsonParserException("IllegalArgumentException while parsing. Path:" + itempath, e);
 		} catch (IllegalAccessException e) {
-			throw new JsonParserException("IllegalAccessException while parsing. Path:" + path, e);
+			throw new JsonParserException("IllegalAccessException while parsing. Path:" + itempath, e);
 		}
 	}
 
