@@ -47,8 +47,8 @@ public class JsonParser<T> {
 						continue;
 					}
 				}
-				if (fieldCache.containsKey(itempath)) {
-					Field field = fieldCache.get(itempath);
+				if (fieldCache.containsKey(itempath) || fieldCache.containsKey(key)) {
+					Field field = fieldCache.containsKey(itempath) ? fieldCache.get(itempath) : fieldCache.get(key);
 					FieldConvertor convertor = FieldConvertor.getConvertor(field);
 					if (convertor != null) {
 						convertor.setFieldValue(field, target, json, key);

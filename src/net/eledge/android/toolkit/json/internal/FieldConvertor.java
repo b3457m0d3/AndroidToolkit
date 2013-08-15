@@ -12,30 +12,6 @@ import org.json.JSONObject;
 
 public enum FieldConvertor {
 
-	LONG(Long.class, long.class) {
-		@Override
-		public void setFieldValue(Field field, Object target, JSONObject json, String key)
-				throws IllegalArgumentException, IllegalAccessException, JSONException {
-			long value = json.getLong(key);
-			if (field.getClass().equals(Long.class)) {
-				field.set(target, Long.valueOf(value));
-			} else {
-				field.setLong(target, value);
-			}
-		}
-	},
-	BOOLEAN(Boolean.class, boolean.class) {
-		@Override
-		public void setFieldValue(Field field, Object target, JSONObject json, String key)
-				throws IllegalArgumentException, IllegalAccessException, JSONException {
-			boolean value = json.getBoolean(key);
-			if (field.getClass().equals(Long.class)) {
-				field.set(target, Boolean.valueOf(value));
-			} else {
-				field.setBoolean(target, value);
-			}
-		}
-	},
 	STRING(String.class) {
 		@Override
 		public void setFieldValue(Field field, Object target, JSONObject json, String key)
@@ -54,6 +30,42 @@ public enum FieldConvertor {
 				array[i] = jsonArray.getString(i);
 			}
 			field.set(target, array);
+		}
+	},
+	LONG(Long.class, long.class) {
+		@Override
+		public void setFieldValue(Field field, Object target, JSONObject json, String key)
+				throws IllegalArgumentException, IllegalAccessException, JSONException {
+			long value = json.getLong(key);
+			if (field.getClass().equals(Long.class)) {
+				field.set(target, Long.valueOf(value));
+			} else {
+				field.setLong(target, value);
+			}
+		}
+	},
+	DOUBLE(Double.class, double.class) {
+		@Override
+		public void setFieldValue(Field field, Object target, JSONObject json, String key)
+				throws IllegalArgumentException, IllegalAccessException, JSONException {
+			double value = json.getDouble(key);
+			if (field.getClass().equals(Long.class)) {
+				field.set(target, Double.valueOf(value));
+			} else {
+				field.setDouble(target, value);
+			}
+		}
+	},
+	BOOLEAN(Boolean.class, boolean.class) {
+		@Override
+		public void setFieldValue(Field field, Object target, JSONObject json, String key)
+				throws IllegalArgumentException, IllegalAccessException, JSONException {
+			boolean value = json.getBoolean(key);
+			if (field.getClass().equals(Long.class)) {
+				field.set(target, Boolean.valueOf(value));
+			} else {
+				field.setBoolean(target, value);
+			}
 		}
 	},
 	ENUM() {
