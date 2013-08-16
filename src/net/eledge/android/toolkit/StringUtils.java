@@ -67,9 +67,17 @@ public class StringUtils {
 	}
 
 	public static String join(String... array) {
+		return joinWithSeperator("", array);
+	}
+	
+	
+	public static String joinWithSeperator(String seperator, String... array) {
 		if ((array != null) && (array.length > 0)) {
 			StringBuilder sb = new StringBuilder();
 			for (String s : array) {
+				if ((seperator != null) && (sb.length() > 0)) {
+					sb.append(seperator);
+				}
 				sb.append(s);
 			}
 			return sb.toString();
