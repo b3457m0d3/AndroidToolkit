@@ -37,7 +37,7 @@ public enum FieldConvertor {
 		public void setFieldValue(Field field, Object target, JSONObject json, String key)
 				throws IllegalArgumentException, IllegalAccessException, JSONException {
 			long value = json.getLong(key);
-			if (field.getClass().equals(Long.class)) {
+			if (field.getType().equals(Long.class)) {
 				field.set(target, Long.valueOf(value));
 			} else {
 				field.setLong(target, value);
@@ -49,7 +49,7 @@ public enum FieldConvertor {
 		public void setFieldValue(Field field, Object target, JSONObject json, String key)
 				throws IllegalArgumentException, IllegalAccessException, JSONException {
 			double value = json.getDouble(key);
-			if (field.getClass().equals(Long.class)) {
+			if (field.getType().equals(Double.class)) {
 				field.set(target, Double.valueOf(value));
 			} else {
 				field.setDouble(target, value);
