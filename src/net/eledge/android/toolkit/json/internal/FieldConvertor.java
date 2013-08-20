@@ -3,9 +3,9 @@ package net.eledge.android.toolkit.json.internal;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import net.eledge.android.toolkit.StringUtils;
 import net.eledge.android.toolkit.json.annotations.JsonField;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,7 +73,7 @@ public enum FieldConvertor {
 		public void setFieldValue(Field field, Object target, JSONObject json, String key)
 				throws IllegalArgumentException, IllegalAccessException, JSONException {
 			JsonField jsonField = field.getAnnotation(JsonField.class);
-			String methodName = StringUtils.defaultValue(jsonField.enumMethod(), "valueOf");
+			String methodName = StringUtils.defaultIfBlank(jsonField.enumMethod(), "valueOf");
 			Class<?> enumClass = field.getType();
 			try {
 				Method method = enumClass.getMethod(methodName, String.class);

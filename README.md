@@ -3,6 +3,11 @@ AndroidToolkit
 
 AndroidToolkit contains a set of helper classes to makes Android applications easier...
 
+## [Apache Commons Lang 2.6](http://commons.apache.org/proper/commons-lang/)
+This toolkit contains a subset of the Apache commons Lang. Just enough to make
+StringUtils, ArrayUtils and NumberUtils work.
+The code is copied as is, only suppress warning annotations are added.
+
 ## Contributing to this project
 As this is an Open Source project, all contributions/suggestions are welcome.
 You can contribute in several ways.

@@ -6,9 +6,11 @@ import java.util.List;
 
 import javax.persistence.Column;
 
-import net.eledge.android.toolkit.StringUtils;
 import net.eledge.android.toolkit.db.internal.FieldType;
 import net.eledge.android.toolkit.db.internal.SQLBuilder;
+
+import org.apache.commons.lang.StringUtils;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

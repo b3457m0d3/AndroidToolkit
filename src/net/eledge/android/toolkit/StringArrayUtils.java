@@ -3,6 +3,8 @@ package net.eledge.android.toolkit;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import android.util.SparseArray;
 
 public class StringArrayUtils {

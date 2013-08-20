@@ -5,11 +5,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import net.eledge.android.toolkit.StringUtils;
+import net.eledge.android.toolkit.StringArrayUtils;
 import net.eledge.android.toolkit.json.annotations.JsonField;
 import net.eledge.android.toolkit.json.exception.JsonParserException;
 import net.eledge.android.toolkit.json.internal.FieldConvertor;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +37,7 @@ public class JsonParser<T> {
 			Iterator<String> keys = json.keys();
 			while (keys.hasNext()) {
 				String key = keys.next();
-				itempath = StringUtils.isNotBlank(path) ? StringUtils.join(path, ".", key) : key;
+				itempath = StringUtils.isNotBlank(path) ? StringUtils.join(StringArrayUtils.toArray(path, ".", key)) : key;
 				Object o = json.get(key);
 				if (o instanceof JSONObject) {
 					parseToObject((JSONObject) o, itempath, target);
@@ -67,7 +68,7 @@ public class JsonParser<T> {
 	private boolean parseToObject(JSONArray jsonArray, String path, T target) throws JsonParserException {
 		if (jsonArray.length() > 0) {
 			if (jsonArray.optJSONObject(0) != null) {
-				String itempath = StringUtils.join(path, "[]");
+				String itempath = StringUtils.join(StringArrayUtils.toArray(path, "[]"));
 				for (int i = 0; i < jsonArray.length(); i++) {
 					JSONObject o = jsonArray.optJSONObject(i);
 					if (o != null) {
@@ -90,7 +91,7 @@ public class JsonParser<T> {
 
 	private String getFieldName(Field field) {
 		JsonField jsonField = field.getAnnotation(JsonField.class);
-		return StringUtils.defaultValue(jsonField.value(), field.getName());
+		return StringUtils.defaultIfBlank(jsonField.value(), field.getName());
 	}
 
 }

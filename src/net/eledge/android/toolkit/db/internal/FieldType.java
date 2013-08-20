@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
-import net.eledge.android.toolkit.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import android.database.Cursor;
 

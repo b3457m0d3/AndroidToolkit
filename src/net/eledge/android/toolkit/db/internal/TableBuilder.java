@@ -8,9 +8,11 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 
 import net.eledge.android.toolkit.StringArrayUtils;
-import net.eledge.android.toolkit.StringUtils;
 import net.eledge.android.toolkit.db.annotations.ModelUpdate;
 import net.eledge.android.toolkit.db.annotations.ModelUpdates;
+
+import org.apache.commons.lang.StringUtils;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.SparseArray;

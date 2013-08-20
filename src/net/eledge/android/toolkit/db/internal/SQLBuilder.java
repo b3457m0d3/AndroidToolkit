@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import net.eledge.android.toolkit.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 public class SQLBuilder {
 
@@ -25,23 +25,23 @@ public class SQLBuilder {
 
 	public static String getFieldName(Field field) {
 		Column column = field.getAnnotation(Column.class);
-		return StringUtils.defaultValue(column.name(), field.getName().toLowerCase(Locale.ENGLISH));
+		return StringUtils.defaultIfBlank(column.name(), field.getName().toLowerCase(Locale.ENGLISH));
 	}
 
 	public static String getFieldName(Field field, Column column) {
-		return StringUtils.defaultValue(column.name(), field.getName().toLowerCase(Locale.ENGLISH));
+		return StringUtils.defaultIfBlank(column.name(), field.getName().toLowerCase(Locale.ENGLISH));
 	}
 
 	public static String getTableName(Class<?> clazz) {
 		Entity entity = clazz.getAnnotation(Entity.class);
-		return StringUtils.defaultValue(entity.name(), clazz.getName().toLowerCase(Locale.ENGLISH));
+		return StringUtils.defaultIfBlank(entity.name(), clazz.getName().toLowerCase(Locale.ENGLISH));
 	}
 
 	public static String getIdField(Class<?> clazz) {
 		for (Field field : clazz.getFields()) {
 			if (field.isAnnotationPresent(Id.class)) {
 				Column column = field.getAnnotation(Column.class);
-				return StringUtils.defaultValue(column.name(), field.getName().toLowerCase(Locale.ENGLISH));
+				return StringUtils.defaultIfBlank(column.name(), field.getName().toLowerCase(Locale.ENGLISH));
 			}
 		}
 		return null;
