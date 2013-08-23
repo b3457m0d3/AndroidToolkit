@@ -27,7 +27,7 @@ public class JsonParser<T> {
 	}
 
 	public void parseToObject(JSONObject json, T target) throws JsonParserException {
-		parseToObject(json, "", target);
+		parseToObject(json, ".", target);
 	}
 
 	private void parseToObject(JSONObject json, String path, T target) throws JsonParserException {
@@ -37,7 +37,9 @@ public class JsonParser<T> {
 			Iterator<String> keys = json.keys();
 			while (keys.hasNext()) {
 				String key = keys.next();
-				itempath = StringUtils.isNotBlank(path) ? StringUtils.join(StringArrayUtils.toArray(path, ".", key)) : key;
+				itempath = StringUtils.equals(".", path) ? 
+						StringUtils.join(StringArrayUtils.toArray(".", key)) : 
+						StringUtils.join(StringArrayUtils.toArray(path, ".", key));
 				Object o = json.get(key);
 				if (o instanceof JSONObject) {
 					parseToObject((JSONObject) o, itempath, target);
