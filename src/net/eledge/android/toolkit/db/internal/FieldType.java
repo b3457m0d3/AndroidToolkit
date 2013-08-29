@@ -2,6 +2,7 @@ package net.eledge.android.toolkit.db.internal;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
@@ -95,6 +96,37 @@ public enum FieldType {
 			return "0";
 		}
 	},
+	DATE("INTEGER") {
+		@Override
+		public void convertToField(Object instance, Field field, Cursor cursor, int columnIndex)
+				throws IllegalArgumentException, IllegalAccessException {
+			long l = cursor.getLong(columnIndex);
+			field.set(instance, new Date(l));
+		}
+		
+		@Override
+		public Long toLong(Object instance, Field field) throws IllegalArgumentException, IllegalAccessException {
+			Date date = (Date) field.get(instance);
+			return Long.valueOf(date.getTime());
+		}
+		
+		@Override
+		public String toString(Object instance, Field field) throws IllegalArgumentException, IllegalAccessException {
+			return defaultValue(instance, field);
+		}
+		
+		@Override
+		public String defaultValue(Object instance, Field field) {
+			try {
+				Long l = toLong(instance, field);
+				if (l != null) {
+					return l.toString();
+				}
+			} catch (Exception e) {
+			}
+			return String.valueOf(new Date().getTime());
+		}
+	},
 	ENUM("TEXT") {
 		@Override
 		public void convertToField(Object instance, Field field, Cursor cursor, int columnIndex)
@@ -153,7 +185,7 @@ public enum FieldType {
 		}
 		String type = clazz.getSimpleName();
 		if ("int".equals(type)) {
-			type = "INTEGER";
+			return INTEGER;
 		}
 		return valueOf(type.toUpperCase(Locale.ENGLISH));
 	}

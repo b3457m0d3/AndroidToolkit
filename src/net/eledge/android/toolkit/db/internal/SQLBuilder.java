@@ -13,13 +13,19 @@ public class SQLBuilder {
 
 	public static String findById(Class<?> clazz) {
 		StringBuilder sb = new StringBuilder(findAll(clazz));
-		sb.append(" WHERE ").append(getIdField(clazz)).append(" = ?");
+		sb.append(" WHERE ").append(getWhereIdClause(clazz));
 		return sb.toString();
 	}
 
 	public static String findAll(Class<?> clazz) {
 		StringBuilder sb = new StringBuilder("SELECT * FROM ");
 		sb.append(getTableName(clazz));
+		return sb.toString();
+	}
+	
+	public static String getWhereIdClause(Class<?> clazz) {
+		StringBuilder sb = new StringBuilder(getIdField(clazz));
+		sb.append(" = ?");
 		return sb.toString();
 	}
 

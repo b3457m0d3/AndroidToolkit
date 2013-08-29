@@ -39,13 +39,23 @@ public abstract class Dao<E> {
 		return count;
 	}
 
+	public void deleteAll() {
+		db.delete(getTableName(), null, null);
+	}
+
+	public void delete(Long id) {
+		if (id != null) {
+			db.delete(getTableName(), SQLBuilder.getWhereIdClause(clazz), new String[] { id.toString() });
+		}
+	}
+
 	public E findById(Long id) {
 		if (id != null) {
 			return findOne(SQLBuilder.findById(clazz), new String[] { String.valueOf(id) });
 		}
 		return null;
 	}
-	
+
 	public E findOne(String rawQuery, String... params) {
 		if (StringUtils.isNotEmpty(rawQuery)) {
 			Cursor cursor = db.rawQuery(rawQuery, params);
@@ -57,9 +67,9 @@ public abstract class Dao<E> {
 	}
 
 	public List<E> find(String rawQuery) {
-		return find(rawQuery, (String[])null);
+		return find(rawQuery, (String[]) null);
 	}
-	
+
 	public List<E> find(String rawQuery, String... params) {
 		Cursor cursor = db.rawQuery(rawQuery, params);
 		if ((cursor != null) && (cursor.getCount() > 0)) {
@@ -67,22 +77,27 @@ public abstract class Dao<E> {
 		}
 		return new ArrayList<E>();
 	}
-	
+
 	public List<E> findAll() {
 		return find(SQLBuilder.findAll(clazz));
 	}
-	
+
+	public void store(List<E> entities) {
+		for (E e : entities) {
+			store(e);
+		}
+	}
+
 	public long store(E entity) {
 		String idField = SQLBuilder.getIdField(clazz);
-		String table = SQLBuilder.getTableName(clazz);
 		ContentValues values = mapToContentValues(entity);
 		if (values.get(idField) == null) {
-			return db.insert(table, null, values);
+			return db.insert(getTableName(), null, values);
 		} else {
 			long id = values.getAsLong(idField);
 			StringBuilder sb = new StringBuilder("WHERE ");
 			sb.append(SQLBuilder.getIdField(clazz)).append(" = ?");
-			db.update(table, values, sb.toString(), new String[] { String.valueOf(id) });
+			db.update(getTableName(), values, sb.toString(), new String[] { String.valueOf(id) });
 			return id;
 		}
 	}
@@ -111,7 +126,7 @@ public abstract class Dao<E> {
 		}
 		return list;
 	}
-	
+
 	private ContentValues mapToContentValues(E entity) {
 		ContentValues values = new ContentValues();
 		try {
@@ -127,6 +142,15 @@ public abstract class Dao<E> {
 		} catch (IllegalAccessException e) {
 		}
 		return values;
+	}
+
+	private String mTableName = null;
+
+	private String getTableName() {
+		if (mTableName == null) {
+			mTableName = SQLBuilder.getTableName(clazz);
+		}
+		return mTableName;
 	}
 
 }

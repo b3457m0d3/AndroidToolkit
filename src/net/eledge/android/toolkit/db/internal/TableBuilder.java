@@ -60,7 +60,7 @@ public class TableBuilder {
 	}
 
 	private String createFieldDef(Class<?> clazz, Field field) {
-		FieldType type = FieldType.getType(clazz);
+		FieldType type = FieldType.getType(field.getType());
 		Column column = field.getAnnotation(Column.class);
 		if (StringUtils.isNotEmpty(column.columnDefinition())) {
 			return column.columnDefinition();
