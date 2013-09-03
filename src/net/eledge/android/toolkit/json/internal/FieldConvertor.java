@@ -2,6 +2,9 @@ package net.eledge.android.toolkit.json.internal;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import net.eledge.android.toolkit.json.annotations.JsonField;
 
@@ -66,6 +69,25 @@ public enum FieldConvertor {
 			} else {
 				field.setBoolean(target, value);
 			}
+		}
+	},
+	MAP(Map.class) {
+		@Override
+		public void setFieldValue(Field field, Object target, JSONObject json, java.lang.String key)
+				throws IllegalArgumentException, IllegalAccessException, JSONException {
+			Map<String, String[]> map = new HashMap<String, String[]>();
+			@SuppressWarnings("unchecked")
+			Iterator<String> keys = json.keys();
+			while (keys.hasNext()) {
+				String k = keys.next();
+				JSONArray jsonArray = json.getJSONArray(k);
+				String[] array = new String[jsonArray.length()];
+				for (int i=0; i<jsonArray.length(); i++) {
+					array[i] = jsonArray.getString(i);
+				}
+				map.put(k, array);
+			}
+			field.set(target, map);
 		}
 	},
 	ENUM() {

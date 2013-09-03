@@ -41,7 +41,7 @@ public class JsonParser<T> {
 						StringUtils.join(StringArrayUtils.toArray(".", key)) : 
 						StringUtils.join(StringArrayUtils.toArray(path, ".", key));
 				Object o = json.get(key);
-				if (o instanceof JSONObject) {
+				if (!fieldCache.containsKey(itempath) && o instanceof JSONObject) {
 					parseToObject((JSONObject) o, itempath, target);
 					continue;
 				}
