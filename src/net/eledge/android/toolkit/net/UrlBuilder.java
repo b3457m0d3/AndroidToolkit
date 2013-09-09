@@ -12,34 +12,63 @@ import org.apache.commons.lang.StringUtils;
 
 public class UrlBuilder {
 
-	private String baseUrl;
+	private String protocol = "http";
+	private StringBuilder baseUrl;
 
 	private Map<String, String> params = new HashMap<String, String>();
 	private Map<String, List<String>> multiParams = new HashMap<String, List<String>>();
 
-	public UrlBuilder(String baseUrl) {
-		this.baseUrl = baseUrl;
-		if (StringUtils.contains(baseUrl, '?')) {
+	public UrlBuilder(String url) {
+		setBaseUrl(url);
+		if (StringUtils.contains(baseUrl.toString(), '?')) {
 			stripBaseUrl();
 		}
 	}
+	
+	private void setBaseUrl(String url) {
+		url = StringUtils.stripEnd(url, "/?&");
+		if (StringUtils.contains(url,"://")) {
+			protocol = StringUtils.substringBefore(url, "://");
+			url = StringUtils.substringAfter(url, "://");
+		}
+		if (StringUtils.containsNone(url, "?")) {
+			url = StringUtils.replace(url, "//", "/");
+		}
+		baseUrl = new StringBuilder(url); 
+	}
 
 	private void stripBaseUrl() {
-		baseUrl = StringUtils.replace(baseUrl, "&amp;", "&");
-		String[] result = StringUtils.split(this.baseUrl, '?');
+		setBaseUrl(StringUtils.replace(baseUrl.toString(), "&amp;", "&"));
+		String[] result = StringUtils.split(baseUrl.toString(), '?');
 		String toProcess = null;
 		if (result.length == 2) {
-			baseUrl = result[0];
+			setBaseUrl(result[0]);
 			toProcess = result[1];
 		} else {
-			if (StringUtils.endsWith(baseUrl, "?")) {
-				baseUrl = result[0];
+			if (StringUtils.endsWith(baseUrl.toString(), "?")) {
+				setBaseUrl(result[0]);
 			} else {
-				baseUrl = "";
+				setBaseUrl("");
 				toProcess = result[0];
 			}
 		}
 		addParamsFromURL(toProcess);
+	}
+	
+	public void addPath(String... paths) {
+		if (StringArrayUtils.isNotBlank(paths)) {
+			for (String path: paths) {
+				path = StringUtils.strip(path, "/?&");
+				baseUrl.append("/").append(path);
+			}
+		}
+	}
+	
+	public void addPage(String page) {
+		if (StringUtils.isNotBlank(page)) {
+			page = StringUtils.strip(page, "/?&");
+			baseUrl.append("/").append(page);
+		}
 	}
 
 	public void addParamsFromURL(String url, String... ignoreKeys) {
@@ -159,7 +188,8 @@ public class UrlBuilder {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(baseUrl);
+		StringBuilder sb = new StringBuilder(protocol);
+		sb.append("://").append(baseUrl.toString());
 		if (params.size() + multiParams.size() > 0) {
 			boolean first = true;
 			sb.append("?");
@@ -182,4 +212,5 @@ public class UrlBuilder {
 		}
 		return sb.toString();
 	}
+
 }
