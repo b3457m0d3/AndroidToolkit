@@ -75,6 +75,7 @@ public enum FieldConvertor {
 		@Override
 		public void setFieldValue(Field field, Object target, JSONObject json, java.lang.String key)
 				throws IllegalArgumentException, IllegalAccessException, JSONException {
+			json = json.getJSONObject(key);
 			Map<String, String[]> map = new HashMap<String, String[]>();
 			@SuppressWarnings("unchecked")
 			Iterator<String> keys = json.keys();

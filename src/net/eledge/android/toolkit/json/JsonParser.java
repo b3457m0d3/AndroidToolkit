@@ -4,12 +4,15 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import net.eledge.android.toolkit.StringArrayUtils;
 import net.eledge.android.toolkit.json.annotations.JsonField;
 import net.eledge.android.toolkit.json.exception.JsonParserException;
 import net.eledge.android.toolkit.json.internal.FieldConvertor;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +21,8 @@ import org.json.JSONObject;
 public class JsonParser<T> {
 
 	private final Class<T> jsonClazz;
+
+	private String[] pathCache;
 
 	private final Map<String, Field> fieldCache = new HashMap<String, Field>();
 
@@ -40,6 +45,9 @@ public class JsonParser<T> {
 				itempath = StringUtils.equals(".", path) ? 
 						StringUtils.join(StringArrayUtils.toArray(".", key)) : 
 						StringUtils.join(StringArrayUtils.toArray(path, ".", key));
+				if (!ArrayUtils.contains(pathCache, itempath)) {
+					continue;
+				}
 				Object o = json.get(key);
 				if (!fieldCache.containsKey(itempath) && o instanceof JSONObject) {
 					parseToObject((JSONObject) o, itempath, target);
@@ -84,11 +92,34 @@ public class JsonParser<T> {
 	}
 
 	private void scanJsonClass() {
+		Set<String> paths = new TreeSet<String>();
 		for (Field field : jsonClazz.getFields()) {
 			if (field.isAnnotationPresent(JsonField.class)) {
-				fieldCache.put(getFieldName(field), field);
+				String key = getFieldName(field);
+				fieldCache.put(key, field);
+				if (StringUtils.containsNone(key, ".")) {
+					paths.add(key);
+				} else {
+					String[] pathElements = StringUtils.split(StringUtils.stripStart(key, "."), ".");
+					StringBuilder sb = new StringBuilder(".");
+					for (String p : pathElements) {
+						if (sb.length() > 1) {
+							sb.append(".");
+						}
+						if (StringUtils.endsWith(p, "[]")) {
+							sb.append(StringUtils.substringBefore(p, "[]"));
+							paths.add(sb.toString());
+							sb.append("[]");
+							paths.add(sb.toString());
+						} else {
+							sb.append(p);
+							paths.add(sb.toString());
+						}
+					}
+				}
 			}
 		}
+		pathCache = paths.toArray(new String[paths.size()]);
 	}
 
 	private String getFieldName(Field field) {
