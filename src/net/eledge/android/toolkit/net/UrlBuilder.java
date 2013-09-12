@@ -61,23 +61,30 @@ public class UrlBuilder {
 		addParamsFromURL(toProcess);
 	}
 	
-	public void addPath(String... paths) {
+	public UrlBuilder disableProtocol() {
+		relativeUrl = true;
+		return this;
+	}
+	
+	public UrlBuilder addPath(String... paths) {
 		if (StringArrayUtils.isNotBlank(paths)) {
 			for (String path: paths) {
 				path = StringUtils.strip(path, "/?&");
 				baseUrl.append("/").append(path);
 			}
 		}
+		return this;
 	}
 	
-	public void addPage(String page) {
+	public UrlBuilder addPage(String page) {
 		if (StringUtils.isNotBlank(page)) {
 			page = StringUtils.strip(page, "/?&");
 			baseUrl.append("/").append(page);
 		}
+		return this;
 	}
 
-	public void addParamsFromURL(String url, String... ignoreKeys) {
+	public UrlBuilder addParamsFromURL(String url, String... ignoreKeys) {
 		if (StringUtils.isNotBlank(url)) {
 			String[] parameters = StringUtils.split(url, "&");
 			for (String string : parameters) {
@@ -95,18 +102,20 @@ public class UrlBuilder {
 				}
 			}
 		}
+		return this;
 	}
 
-	public void addParam(String key, String value, boolean override) {
+	public UrlBuilder addParam(String key, String value, boolean override) {
 		if (StringUtils.isNotBlank(key) && StringUtils.isNotBlank(value)) {
 			if (!params.containsKey(key)
 					|| (params.containsKey(key) && override)) {
 				params.put(key, value);
 			}
 		}
+		return this;
 	}
 
-	public void addParam(String key, String[] values, boolean override) {
+	public UrlBuilder addParam(String key, String[] values, boolean override) {
 		if (StringUtils.isNotBlank(key)) {
 			if (override) {
 				removeParam(key);
@@ -118,13 +127,14 @@ public class UrlBuilder {
 
 			}
 		}
+		return this;
 	}
 
 	public boolean hasParam(String key) {
 		return multiParams.containsKey(key) || params.containsKey(key);
 	}
 
-	public void removeParam(String key) {
+	public UrlBuilder removeParam(String key) {
 		if (StringUtils.isNotBlank(key)) {
 			if (multiParams.containsKey(key)) {
 				multiParams.remove(key);
@@ -133,9 +143,10 @@ public class UrlBuilder {
 				params.remove(key);
 			}
 		}
+		return this;
 	}
 
-	public void removeDefault(String key, String value) {
+	public UrlBuilder removeDefault(String key, String value) {
 		if (StringUtils.isNotBlank(key)) {
 			if (multiParams.containsKey(key)) {
 				if (multiParams.get(key).contains(value)) {
@@ -148,9 +159,10 @@ public class UrlBuilder {
 				}
 			}
 		}
+		return this;
 	}
 
-	public void removeStartWith(String key, String value) {
+	public UrlBuilder removeStartWith(String key, String value) {
 		if (params.containsKey(key)) {
 			if (StringUtils.startsWith(params.get(key), value)) {
 				params.remove(key);
@@ -170,9 +182,10 @@ public class UrlBuilder {
 				removeParam(key);
 			}
 		}
+		return this;
 	}
 
-	public void addMultiParam(String key, String value) {
+	public UrlBuilder addMultiParam(String key, String value) {
 		if (StringUtils.isNotBlank(key) && StringUtils.isNotBlank(value)) {
 			List<String> list = null;
 			if (multiParams.containsKey(key)) {
@@ -190,6 +203,7 @@ public class UrlBuilder {
 				list.add(value);
 			}
 		}
+		return this;
 	}
 
 	@Override
