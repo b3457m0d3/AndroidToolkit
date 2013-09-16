@@ -124,6 +124,7 @@ public abstract class Dao<E> {
 				}
 			} while (cursor.moveToNext());
 		}
+		cursor.close();
 		return list;
 	}
 
