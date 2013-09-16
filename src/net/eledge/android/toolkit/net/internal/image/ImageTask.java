@@ -53,6 +53,7 @@ public class ImageTask extends AsyncTask<String, Void, Bitmap> {
 	private Bitmap loadBitmap(String url) {
 		try {
 			URLConnection openConnection = new URL(url).openConnection();
+			openConnection.setConnectTimeout(500);
 			String filename = String.valueOf(url.hashCode());
 			Bitmap bitmap = null;
 			if(isCancelled()) {
