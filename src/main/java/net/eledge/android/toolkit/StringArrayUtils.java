@@ -1,22 +1,30 @@
 package net.eledge.android.toolkit;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.util.SparseArray;
 
 import org.apache.commons.lang.StringUtils;
 
-import android.util.SparseArray;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StringArrayUtils {
 
 	public static boolean isNotBlank(String[] array) {
 		return ((array != null) && (array.length > 0)) && StringUtils.join(array).trim().length() > 0;
 	}
-	
+
 	public static boolean isBlank(String[] array) {
 		return !isNotBlank(array);
 	}
-	
+
+    public static boolean areAllBlank(String[]... arrays) {
+        boolean allBlank = true;
+        for (String[] array: arrays) {
+            allBlank &= isBlank(array);
+        }
+        return allBlank;
+    }
+
 	public static String[] toArray(String... items) {
 		return items;
 	}
