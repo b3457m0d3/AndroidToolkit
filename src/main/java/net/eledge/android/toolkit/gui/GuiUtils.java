@@ -1,10 +1,11 @@
 package net.eledge.android.toolkit.gui;
 
-import net.eledge.android.toolkit.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
+
+import net.eledge.android.toolkit.R;
 
 public class GuiUtils {
 
@@ -25,6 +26,7 @@ public class GuiUtils {
 	public static void startTopActivity(Context context, Class<? extends Activity> clazz) {
 		final Intent intent = new Intent(context, clazz);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
 	
