@@ -37,7 +37,6 @@ This project is using the gradle building system coming with Android Studio.
 
 ### Development Environment
 This project requires the following setup:
-
-* Android Studio 0.3.2 or higher
-* JDK 1.7 or higher
-* Gradle 1.8 or higher
+* __Android Studio 0.3.2__ or higher
+* __JDK 1.7__ or higher
+* __Gradle 1.8__ or higher
