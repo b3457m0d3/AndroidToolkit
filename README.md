@@ -8,6 +8,11 @@ This toolkit contains a subset of the Apache commons Lang. Just enough to make
 StringUtils, ArrayUtils and NumberUtils work.
 The code is copied as is, only suppress warning annotations are added.
 
+### [Apache Commons IO 2.4](http://commons.apache.org/proper/commons-io/)
+This toolkit contains a subset of the Apache commons IO. Just enough to make
+IOUtils work.
+The code is copied as is, only suppress warning annotations are added.
+
 ## Contributing to this project
 As this is an Open Source project, all contributions/suggestions are welcome.
 You can contribute in several ways.
@@ -26,3 +31,13 @@ look at your request and hopefully merge it into the master branch.
 * __Join the team__: It's also possible to be added to the development team 
 and submit directly into the repository. But it would be nice if we know you 
 a bit, so use the fork method first a few times. :-) 
+
+## Setup project
+This project is using the gradle building system coming with Android Studio.
+
+### Development Environment
+This project requires the following setup:
+
+* Android Studio 0.3.2 or higher
+* JDK 1.7 or higher
+* Gradle 1.8 or higher
