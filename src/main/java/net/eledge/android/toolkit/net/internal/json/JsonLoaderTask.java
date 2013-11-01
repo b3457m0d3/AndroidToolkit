@@ -1,8 +1,7 @@
 package net.eledge.android.toolkit.net.internal.json;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import net.eledge.android.toolkit.net.abstracts.AsyncLoaderListener;
 
@@ -13,7 +12,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.AsyncTask;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class JsonLoaderTask extends AsyncTask<String, Void, JSONObject> {
 
@@ -41,10 +42,10 @@ public class JsonLoaderTask extends AsyncTask<String, Void, JSONObject> {
 				}
 				return new JSONObject(json.toString());
 			}
-		} catch (IOException e) {
-		} catch (JSONException e) {
+		} catch (IOException | JSONException e) {
+            Log.e(this.getClass().getName(), e.getMessage(), e);
 		}
-		return null;
+        return null;
 	}
 
 	@Override

@@ -1,19 +1,20 @@
 package net.eledge.android.toolkit.net.internal.image;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.lang.ref.SoftReference;
-import java.net.URL;
-import java.net.URLConnection;
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import net.eledge.android.toolkit.net.ImageCacheManager;
 
 import org.apache.http.HttpStatus;
 
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.lang.ref.SoftReference;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class ImageTask extends AsyncTask<String, Void, Bitmap> {
 	
@@ -39,8 +40,10 @@ public class ImageTask extends AsyncTask<String, Void, Bitmap> {
 		if(!isCancelled()) {
 			if(data.imageView != null) {
 				Activity a = (Activity) data.imageView.getContext();
-				a.runOnUiThread(new BitmapDisplayer(bitmap, data));
-		    }
+                if (a != null) {
+                    a.runOnUiThread(new BitmapDisplayer(bitmap, data));
+                }
+            }
 		}
 	}
 	
@@ -88,7 +91,7 @@ public class ImageTask extends AsyncTask<String, Void, Bitmap> {
 						.getInputStream());
 				cacheFile(bitmap, bitmapFile);
 			}
-			cacheManager.refcache.put(url, new SoftReference<Bitmap>(bitmap));
+			cacheManager.refcache.put(url, new SoftReference<>(bitmap));
 			return bitmap;
 
 		} catch (Exception ex) {
@@ -108,7 +111,8 @@ public class ImageTask extends AsyncTask<String, Void, Bitmap> {
 			try {
 				if (out != null)
 					out.close();
-			} catch (Exception ex) {
+			} catch (Exception e) {
+                Log.e(this.getClass().getName(), e.getMessage(), e);
 			}
 		}
 	}

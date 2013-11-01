@@ -1,11 +1,9 @@
 package net.eledge.android.toolkit.db.internal;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.util.SparseArray;
 
 import net.eledge.android.toolkit.StringArrayUtils;
 import net.eledge.android.toolkit.db.annotations.ModelUpdate;
@@ -13,9 +11,12 @@ import net.eledge.android.toolkit.db.annotations.ModelUpdates;
 
 import org.apache.commons.lang.StringUtils;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.SparseArray;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
 
 public class TableBuilder {
 
@@ -44,7 +45,7 @@ public class TableBuilder {
 	}
 
 	public String[] update(Class<?> clazz, int oldVersion, int newVersion) {
-		SparseArray<List<String>> versionUpdates = new SparseArray<List<String>>();
+		SparseArray<List<String>> versionUpdates = new SparseArray<>();
 		versionUpdates.put(-1, new ArrayList<String>());
 		for (int i = oldVersion + 1; i <= newVersion; i++) {
 			versionUpdates.put(i, new ArrayList<String>());
@@ -77,6 +78,7 @@ public class TableBuilder {
 				sb.append(" DEFAULT ").append(type.defaultValue(clazz.newInstance(), field));
 			}
 		} catch (Exception e) {
+            Log.e(this.getClass().getName(), e.getMessage(), e);
 		}
 		if (field.isAnnotationPresent(Id.class)) {
 			sb.append(" PRIMARY KEY");
@@ -85,7 +87,7 @@ public class TableBuilder {
 	}
 
 	public List<String> createTableUpdates(Class<?> clazz) {
-		List<String> updates = new ArrayList<String>();
+		List<String> updates = new ArrayList<>();
 		final List<String> names = getExistingFields(clazz);
 		for (Field field : clazz.getFields()) {
 			if (field.isAnnotationPresent(Column.class)) {
@@ -140,7 +142,7 @@ public class TableBuilder {
 	}
 
 	private List<String> getExistingFields(Class<?> clazz) {
-		List<String> names = new ArrayList<String>();
+		List<String> names = new ArrayList<>();
 		StringBuilder sb = new StringBuilder("pragma table_info(");
 		sb.append(SQLBuilder.getTableName(clazz));
 		sb.append(");");

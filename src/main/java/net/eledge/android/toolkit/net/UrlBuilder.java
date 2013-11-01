@@ -1,14 +1,14 @@
 package net.eledge.android.toolkit.net;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.eledge.android.toolkit.StringArrayUtils;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UrlBuilder {
 
@@ -17,8 +17,8 @@ public class UrlBuilder {
 	
 	private boolean relativeUrl = false;
 
-	private Map<String, String> params = new HashMap<String, String>();
-	private Map<String, List<String>> multiParams = new HashMap<String, List<String>>();
+	private Map<String, String> params = new HashMap<>();
+	private Map<String, List<String>> multiParams = new HashMap<>();
 
 	public UrlBuilder(String url) {
 		setBaseUrl(url);
@@ -169,7 +169,7 @@ public class UrlBuilder {
 			}
 		}
 		if (multiParams.containsKey(key)) {
-			List<String> toRemove = new ArrayList<String>();
+			List<String> toRemove = new ArrayList<>();
 			for (String string : multiParams.get(key)) {
 				if (StringUtils.startsWith(string, value)) {
 					toRemove.add(string);
@@ -187,11 +187,11 @@ public class UrlBuilder {
 
 	public UrlBuilder addMultiParam(String key, String value) {
 		if (StringUtils.isNotBlank(key) && StringUtils.isNotBlank(value)) {
-			List<String> list = null;
+			List<String> list;
 			if (multiParams.containsKey(key)) {
 				list = multiParams.get(key);
 			} else {
-				list = new ArrayList<String>();
+				list = new ArrayList<>();
 				multiParams.put(key, list);
 				if (params.containsKey(key)) {
 					// convert to Array...

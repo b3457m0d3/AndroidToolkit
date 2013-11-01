@@ -1,5 +1,14 @@
 package net.eledge.android.toolkit.net;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.widget.ImageView;
+
+import net.eledge.android.toolkit.net.abstracts.AsyncLoaderListener;
+import net.eledge.android.toolkit.net.internal.image.ImageTask;
+import net.eledge.android.toolkit.net.internal.image.ImageTaskData;
+
 import java.io.File;
 import java.lang.ref.SoftReference;
 import java.text.SimpleDateFormat;
@@ -7,31 +16,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import net.eledge.android.toolkit.net.abstracts.AsyncLoaderListener;
-import net.eledge.android.toolkit.net.internal.image.ImageTask;
-import net.eledge.android.toolkit.net.internal.image.ImageTaskData;
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.widget.ImageView;
-
 @SuppressLint("SimpleDateFormat")
 public class ImageCacheManager {
 
 	public long cacheDuration;
 
-	public List<ImageTask> stack = new ArrayList<ImageTask>();
+	public final List<ImageTask> stack = new ArrayList<>();
 
 	public File cacheDir;
 
-	public final HashMap<String, SoftReference<Bitmap>> refcache = new HashMap<String, SoftReference<Bitmap>>();
+	public final HashMap<String, SoftReference<Bitmap>> refcache = new HashMap<>();
 
 	public SimpleDateFormat mDateFormatter;
 
 	public ImageCacheManager(Context context, long cacheDuration) {
 		this.cacheDuration = cacheDuration;
 		cacheDir = context.getCacheDir();
-		if (!cacheDir.exists()) {
+        assert cacheDir != null;
+        if (!cacheDir.exists()) {
 			cacheDir.mkdirs();
 		}
 		mDateFormatter = new SimpleDateFormat("EEE',' dd MMM yyyy HH:mm:ss zzz");

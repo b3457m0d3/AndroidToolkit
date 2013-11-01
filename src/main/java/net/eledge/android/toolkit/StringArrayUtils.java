@@ -37,7 +37,7 @@ public class StringArrayUtils {
 	}
 	
 	public static String[] toArray(SparseArray<List<String>> sparseArray) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		if ( (sparseArray != null) && (sparseArray.size() > 0)) {
 			for (int i=0; i<sparseArray.size(); i++) {
 				list.addAll(sparseArray.valueAt(i));

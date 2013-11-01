@@ -1,13 +1,14 @@
 package net.eledge.android.toolkit.db.internal;
 
+import android.database.Cursor;
+import android.util.Log;
+
+import org.apache.commons.lang.StringUtils;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Locale;
-
-import org.apache.commons.lang.StringUtils;
-
-import android.database.Cursor;
 
 public enum FieldType {
 
@@ -19,13 +20,13 @@ public enum FieldType {
 			if (field.getType().isPrimitive()) {
 				field.setInt(instance, i);
 			} else {
-				field.set(instance, Integer.valueOf(i));
+				field.set(instance, i);
 			}
 		}
 
 		@Override
 		public Long toLong(Object instance, Field field) throws IllegalArgumentException, IllegalAccessException {
-			return Long.valueOf(field.getInt(instance));
+			return (long) field.getInt(instance);
 		}
 
 		@Override
@@ -36,6 +37,7 @@ public enum FieldType {
 					return l.toString();
 				}
 			} catch (Exception e) {
+                Log.e(this.getClass().getName(), e.getMessage(), e);
 			}
 			return "0";
 		}
@@ -48,13 +50,13 @@ public enum FieldType {
 			if (field.getType().isPrimitive()) {
 				field.setLong(instance, l);
 			} else {
-				field.set(instance, Long.valueOf(l));
+				field.set(instance, l);
 			}
 		}
 
 		@Override
 		public Long toLong(Object instance, Field field) throws IllegalArgumentException, IllegalAccessException {
-			return Long.valueOf(field.getInt(instance));
+			return (long) field.getInt(instance);
 		}
 
 		@Override
@@ -65,6 +67,7 @@ public enum FieldType {
 					return l.toString();
 				}
 			} catch (Exception e) {
+                Log.e(this.getClass().getName(), e.getMessage(), e);
 			}
 			return "0";
 		}
@@ -77,7 +80,7 @@ public enum FieldType {
 			if (field.getType().isPrimitive()) {
 				field.setBoolean(instance, b);
 			} else {
-				field.set(instance, Boolean.valueOf(b));
+				field.set(instance, b);
 			}
 		}
 
@@ -92,6 +95,7 @@ public enum FieldType {
 			try {
 				return toString(instance, field);
 			} catch (Exception e) {
+                Log.e(this.getClass().getName(), e.getMessage(), e);
 			}
 			return "0";
 		}
@@ -107,7 +111,7 @@ public enum FieldType {
 		@Override
 		public Long toLong(Object instance, Field field) throws IllegalArgumentException, IllegalAccessException {
 			Date date = (Date) field.get(instance);
-			return Long.valueOf(date.getTime());
+			return date.getTime();
 		}
 		
 		@Override
@@ -123,6 +127,7 @@ public enum FieldType {
 					return l.toString();
 				}
 			} catch (Exception e) {
+                Log.e(this.getClass().getName(), e.getMessage(), e);
 			}
 			return String.valueOf(new Date().getTime());
 		}
@@ -175,6 +180,7 @@ public enum FieldType {
 			sb.append("'");
 			return sb.toString();
 		} catch (Exception e) {
+            Log.e(this.getClass().getName(), e.getMessage(), e);
 		}
 		return "''";
 	}
