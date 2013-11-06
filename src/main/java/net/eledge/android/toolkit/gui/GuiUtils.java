@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import net.eledge.android.toolkit.R;
-
 public class GuiUtils {
 
 	public static void toast(Context context, int text) {
@@ -17,10 +15,6 @@ public class GuiUtils {
 	public static void toast(Context context, String text) {
 		Toast.makeText(context, text,
 				Toast.LENGTH_SHORT).show();
-	}
-	
-	public static void notImplementedYet(Context context) {
-		toast(context, R.string.androidToolkit_niy);
 	}
 	
 	public static void startTopActivity(Context context, Class<? extends Activity> clazz) {

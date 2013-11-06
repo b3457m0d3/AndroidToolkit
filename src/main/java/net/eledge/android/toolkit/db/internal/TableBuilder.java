@@ -50,7 +50,7 @@ public class TableBuilder {
 		for (int i = oldVersion + 1; i <= newVersion; i++) {
 			versionUpdates.put(i, new ArrayList<String>());
 		}
-		if (doesTableExists(clazz)) {
+		if (!doesTableExists(clazz)) {
 			versionUpdates.get(-1).add(create(clazz));
 		} else {
 			versionUpdates.get(-1).addAll(createTableUpdates(clazz));
@@ -136,9 +136,11 @@ public class TableBuilder {
 	}
 
 	private boolean doesTableExists(Class<?> clazz) {
-		final String query = "SELECT name FROM sqlite_master WHERE type='table' AND name = ?;";
+		final String query = "SELECT DISTINCT tbl_name FROM sqlite_master WHERE type='table' AND tbl_name = ?";
 		Cursor cursor = db.rawQuery(query, new String[] { SQLBuilder.getTableName(clazz) });
-		return cursor.getCount() == 1;
+        boolean exists = cursor.getCount() == 1;
+        cursor.close();
+		return exists;
 	}
 
 	private List<String> getExistingFields(Class<?> clazz) {
@@ -146,11 +148,12 @@ public class TableBuilder {
 		StringBuilder sb = new StringBuilder("pragma table_info(");
 		sb.append(SQLBuilder.getTableName(clazz));
 		sb.append(");");
-		Cursor cursor = db.rawQuery(sb.toString(), new String[] { SQLBuilder.getTableName(clazz) });
+		Cursor cursor = db.rawQuery(sb.toString(), new String[] { });
 		if ((cursor != null) && cursor.moveToFirst()) {
 			do {
 				names.add(cursor.getString(1));
 			} while (cursor.moveToNext());
+            cursor.close();
 		}
 		return names;
 	}
