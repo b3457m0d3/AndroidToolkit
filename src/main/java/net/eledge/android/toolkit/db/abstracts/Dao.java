@@ -61,7 +61,9 @@ public abstract class Dao<E> {
         if (StringUtils.isNotEmpty(rawQuery)) {
             Cursor cursor = db.rawQuery(rawQuery, params);
             if ((cursor != null) && (cursor.getCount() == 1)) {
-                return mapToEntities(cursor).get(0);
+                E entity = mapToEntities(cursor).get(0);
+                cursor.close();
+                return entity;
             }
         }
         return null;
@@ -74,6 +76,7 @@ public abstract class Dao<E> {
     public List<E> find(String rawQuery, String... params) {
         Cursor cursor = db.rawQuery(rawQuery, params);
         if ((cursor != null) && (cursor.getCount() > 0)) {
+            // mapToEntities will close cursor
             return mapToEntities(cursor);
         }
         return new ArrayList<>();
