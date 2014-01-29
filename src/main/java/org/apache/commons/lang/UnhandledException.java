@@ -1,13 +1,11 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Copyright (c) 2014 eLedge.net and the original author or authors.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,11 +20,11 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
  * <p>Thrown when it is impossible or undesirable to consume or throw a checked exception.</p>
  * This exception supplements the standard exception classes by providing a more
  * semantically rich description of the problem.</p>
- * 
+ * <p/>
  * <p><code>UnhandledException</code> represents the case where a method has to deal
  * with a checked exception but does not wish to.
  * Instead, the checked exception is rethrown in this unchecked wrapper.</p>
- * 
+ * <p/>
  * <pre>
  * public void foo() {
  *   try {
@@ -39,14 +37,14 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
  * </pre>
  *
  * @author Matthew Hawthorne
- * @since 2.0
  * @version $Id: UnhandledException.java 437554 2006-08-28 06:21:41Z bayard $
+ * @since 2.0
  */
 public class UnhandledException extends NestableRuntimeException {
 
     /**
      * Required for serialization support.
-     * 
+     *
      * @see java.io.Serializable
      */
     private static final long serialVersionUID = 1832101364842773720L;
@@ -54,7 +52,7 @@ public class UnhandledException extends NestableRuntimeException {
     /**
      * Constructs the exception using a cause.
      *
-     * @param cause  the underlying cause
+     * @param cause the underlying cause
      */
     public UnhandledException(Throwable cause) {
         super(cause);
@@ -63,8 +61,8 @@ public class UnhandledException extends NestableRuntimeException {
     /**
      * Constructs the exception using a message and cause.
      *
-     * @param message  the message to use
-     * @param cause  the underlying cause
+     * @param message the message to use
+     * @param cause   the underlying cause
      */
     public UnhandledException(String message, Throwable cause) {
         super(message, cause);

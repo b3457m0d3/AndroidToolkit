@@ -1,12 +1,10 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Copyright (c) 2014 eLedge.net and the original author or authors.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,14 +14,14 @@
  */
 package org.apache.commons.lang.reflect;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang.SystemUtils;
+
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.ClassUtils;
-import org.apache.commons.lang.SystemUtils;
 
 /**
  * Contains common code for working with Methods/Constructors, extracted and
@@ -33,8 +31,8 @@ import org.apache.commons.lang.SystemUtils;
  * @author Apache Software Foundation
  * @author Steve Cohen
  * @author Matt Benson
- * @since 2.5
  * @version $Id: MemberUtils.java 1057013 2011-01-09 20:04:16Z niallp $
+ * @since 2.5
  */
 @SuppressWarnings("rawtypes")
 abstract class MemberUtils {
@@ -43,6 +41,7 @@ abstract class MemberUtils {
     private static final int ACCESS_TEST = Modifier.PUBLIC | Modifier.PROTECTED | Modifier.PRIVATE;
 
     private static final Method IS_SYNTHETIC;
+
     static {
         Method isSynthetic = null;
         if (SystemUtils.isJavaVersionAtLeast(1.5f)) {
@@ -56,13 +55,15 @@ abstract class MemberUtils {
         IS_SYNTHETIC = isSynthetic;
     }
 
-    /** Array of primitive number types ordered by "promotability" */
-    private static final Class[] ORDERED_PRIMITIVE_TYPES = { Byte.TYPE, Short.TYPE,
-            Character.TYPE, Integer.TYPE, Long.TYPE, Float.TYPE, Double.TYPE };
+    /**
+     * Array of primitive number types ordered by "promotability"
+     */
+    private static final Class[] ORDERED_PRIMITIVE_TYPES = {Byte.TYPE, Short.TYPE,
+            Character.TYPE, Integer.TYPE, Long.TYPE, Float.TYPE, Double.TYPE};
 
     /**
      * XXX Default access superclass workaround
-     *
+     * <p/>
      * When a public class has a default access superclass with public members,
      * these members are accessible. Calling them from compiled code works fine.
      * Unfortunately, on some JVMs, using reflection to invoke these members
@@ -70,6 +71,7 @@ abstract class MemberUtils {
      * Calling setAccessible(true) solves the problem but will only work from
      * sufficiently privileged code. Better workarounds would be gratefully
      * accepted.
+     *
      * @param o the AccessibleObject to set as accessible
      */
     static void setAccessibleWorkaround(AccessibleObject o) {
@@ -89,6 +91,7 @@ abstract class MemberUtils {
 
     /**
      * Learn whether a given set of modifiers implies package access.
+     *
      * @param modifiers to test
      * @return true unless package/protected/private modifier detected
      */
@@ -98,6 +101,7 @@ abstract class MemberUtils {
 
     /**
      * Check a Member for basic accessibility.
+     *
      * @param m Member to check
      * @return true if <code>m</code> is accessible
      */
@@ -107,6 +111,7 @@ abstract class MemberUtils {
 
     /**
      * Try to learn whether a given member, on JDK >= 1.5, is synthetic.
+     *
      * @param m Member to check
      * @return true if <code>m</code> was introduced by the compiler.
      */
@@ -126,10 +131,10 @@ abstract class MemberUtils {
      * by the results of the comparison would return the best match first
      * (least).
      *
-     * @param left the "left" parameter set
-     * @param right the "right" parameter set
+     * @param left   the "left" parameter set
+     * @param right  the "right" parameter set
      * @param actual the runtime parameter types to match against
-     * <code>left</code>/<code>right</code>
+     *               <code>left</code>/<code>right</code>
      * @return int consistent with <code>compare</code> semantics
      */
     static int compareParameterTypes(Class[] left, Class[] right, Class[] actual) {
@@ -141,7 +146,8 @@ abstract class MemberUtils {
     /**
      * Returns the sum of the object transformation cost for each class in the
      * source argument list.
-     * @param srcArgs The source arguments
+     *
+     * @param srcArgs  The source arguments
      * @param destArgs The destination arguments
      * @return The total transformation cost
      */
@@ -160,7 +166,8 @@ abstract class MemberUtils {
      * Gets the number of steps required needed to turn the source class into
      * the destination class. This represents the number of steps in the object
      * hierarchy graph.
-     * @param srcClass The source class
+     *
+     * @param srcClass  The source class
      * @param destClass The destination class
      * @return The cost of transforming an object
      */
@@ -195,7 +202,8 @@ abstract class MemberUtils {
     /**
      * Get the number of steps required to promote a primitive number to another
      * type.
-     * @param srcClass the (primitive) source class
+     *
+     * @param srcClass  the (primitive) source class
      * @param destClass the (primitive) destination class
      * @return The cost of promoting the primitive
      */

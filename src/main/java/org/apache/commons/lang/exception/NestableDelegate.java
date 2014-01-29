@@ -1,13 +1,11 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Copyright (c) 2014 eLedge.net and the original author or authors.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,27 +27,27 @@ import java.util.List;
 /**
  * <p>A shared implementation of the nestable exception functionality.</p>
  * <p>
- * The code is shared between 
+ * The code is shared between
  * {@link org.apache.commons.lang.exception.NestableError NestableError},
  * {@link org.apache.commons.lang.exception.NestableException NestableException} and
  * {@link org.apache.commons.lang.exception.NestableRuntimeException NestableRuntimeException}.
  * </p>
- * 
+ *
  * @author Apache Software Foundation
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author Daniel L. Rall
  * @author <a href="mailto:knielsen@apache.org">Kasper Nielsen</a>
  * @author <a href="mailto:steven@caswell.name">Steven Caswell</a>
  * @author Sean C. Sullivan
- * @since 1.0
  * @version $Id: NestableDelegate.java 905636 2010-02-02 14:03:32Z niallp $
+ * @since 1.0
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class NestableDelegate implements Serializable {
 
     /**
      * Required for serialization support.
-     * 
+     *
      * @see java.io.Serializable
      */
     private static final long serialVersionUID = 1L;
@@ -58,8 +56,8 @@ public class NestableDelegate implements Serializable {
      * Constructor error message.
      */
     private transient static final String MUST_BE_THROWABLE =
-        "The Nestable implementation passed to the NestableDelegate(Nestable) "
-            + "constructor must extend java.lang.Throwable";
+            "The Nestable implementation passed to the NestableDelegate(Nestable) "
+                    + "constructor must extend java.lang.Throwable";
 
     /**
      * Holds the reference to the exception or error that we're
@@ -67,33 +65,36 @@ public class NestableDelegate implements Serializable {
      * org.apache.commons.lang.exception.Nestable} implementation).
      */
     private Throwable nestable = null;
-    
+
     /**
      * Whether to print the stack trace top-down.
      * This public flag may be set by calling code, typically in initialisation.
      * This exists for backwards compatability, setting it to false will return
      * the library to v1.0 behaviour (but will affect all users of the library
      * in the classloader).
+     *
      * @since 2.0
      */
     public static boolean topDown = true;
-    
+
     /**
      * Whether to trim the repeated stack trace.
      * This public flag may be set by calling code, typically in initialisation.
      * This exists for backwards compatability, setting it to false will return
      * the library to v1.0 behaviour (but will affect all users of the library
      * in the classloader).
+     *
      * @since 2.0
      */
     public static boolean trimStackFrames = true;
-    
+
     /**
      * Whether to match subclasses via indexOf.
      * This public flag may be set by calling code, typically in initialisation.
      * This exists for backwards compatability, setting it to false will return
      * the library to v2.0 behaviour (but will affect all users of the library
      * in the classloader).
+     *
      * @since 2.1
      */
     public static boolean matchSubclasses = true;
@@ -103,7 +104,7 @@ public class NestableDelegate implements Serializable {
      * specified <code>Nestable</code>.
      *
      * @param nestable the Nestable implementation (<i>must</i> extend
-     * {@link java.lang.Throwable})
+     *                 {@link java.lang.Throwable})
      * @since 2.0
      */
     public NestableDelegate(Nestable nestable) {
@@ -117,14 +118,12 @@ public class NestableDelegate implements Serializable {
     /**
      * Returns the error message of the <code>Throwable</code> in the chain of <code>Throwable</code>s at the
      * specified index, numbered from 0.
-     * 
-     * @param index
-     *            the index of the <code>Throwable</code> in the chain of <code>Throwable</code>s
+     *
+     * @param index the index of the <code>Throwable</code> in the chain of <code>Throwable</code>s
      * @return the error message, or null if the <code>Throwable</code> at the specified index in the chain does not
-     *         contain a message
-     * @throws IndexOutOfBoundsException
-     *             if the <code>index</code> argument is negative or not less than the count of <code>Throwable</code>s
-     *             in the chain
+     * contain a message
+     * @throws IndexOutOfBoundsException if the <code>index</code> argument is negative or not less than the count of <code>Throwable</code>s
+     *                                   in the chain
      * @since 2.0
      */
     public String getMessage(int index) {
@@ -137,11 +136,10 @@ public class NestableDelegate implements Serializable {
 
     /**
      * Returns the full message contained by the <code>Nestable</code> and any nested <code>Throwable</code>s.
-     * 
-     * @param baseMsg
-     *            the base message to use when creating the full message. Should be generally be called via
-     *            <code>nestableHelper.getMessage(super.getMessage())</code>, where <code>super</code> is an
-     *            instance of {@link java.lang.Throwable}.
+     *
+     * @param baseMsg the base message to use when creating the full message. Should be generally be called via
+     *                <code>nestableHelper.getMessage(super.getMessage())</code>, where <code>super</code> is an
+     *                instance of {@link java.lang.Throwable}.
      * @return The concatenated message for this and all nested <code>Throwable</code>s
      * @since 2.0
      */
@@ -162,7 +160,7 @@ public class NestableDelegate implements Serializable {
      * for each message. Any <code>Throwable</code> not containing a message is represented in the array by a null.
      * This has the effect of cause the length of the returned array to be equal to the result of the
      * {@link #getThrowableCount()} operation.
-     * 
+     *
      * @return the error messages
      * @since 2.0
      */
@@ -171,9 +169,9 @@ public class NestableDelegate implements Serializable {
         String[] msgs = new String[throwables.length];
         for (int i = 0; i < throwables.length; i++) {
             msgs[i] =
-                (Nestable.class.isInstance(throwables[i])
-                    ? ((Nestable) throwables[i]).getMessage(0)
-                    : throwables[i].getMessage());
+                    (Nestable.class.isInstance(throwables[i])
+                            ? ((Nestable) throwables[i]).getMessage(0)
+                            : throwables[i].getMessage());
         }
         return msgs;
     }
@@ -183,11 +181,11 @@ public class NestableDelegate implements Serializable {
      * <code>Throwable</code>s at the specified index, numbered from 0.
      *
      * @param index the index, numbered from 0, of the <code>Throwable</code> in
-     * the chain of <code>Throwable</code>s
+     *              the chain of <code>Throwable</code>s
      * @return the <code>Throwable</code>
      * @throws IndexOutOfBoundsException if the <code>index</code> argument is
-     * negative or not less than the count of <code>Throwable</code>s in the
-     * chain
+     *                                   negative or not less than the count of <code>Throwable</code>s in the
+     *                                   chain
      * @since 2.0
      */
     public Throwable getThrowable(int index) {
@@ -226,7 +224,7 @@ public class NestableDelegate implements Serializable {
      * that matches the specified type, or a subclass, in the chain of <code>Throwable</code>s
      * with an index greater than or equal to the specified index.
      * The method returns -1 if the specified type is not found in the chain.
-     * <p>
+     * <p/>
      * NOTE: From v2.1, we have clarified the <code>Nestable</code> interface
      * such that this method matches subclasses.
      * If you want to NOT match subclasses, please use
@@ -235,14 +233,14 @@ public class NestableDelegate implements Serializable {
      * An alternative is to use the public static flag {@link #matchSubclasses}
      * on <code>NestableDelegate</code>, however this is not recommended.
      *
-     * @param type  the type to find, subclasses match, null returns -1
+     * @param type      the type to find, subclasses match, null returns -1
      * @param fromIndex the index, numbered from 0, of the starting position in
-     * the chain to be searched
+     *                  the chain to be searched
      * @return index of the first occurrence of the type in the chain, or -1 if
      * the type is not found
      * @throws IndexOutOfBoundsException if the <code>fromIndex</code> argument
-     * is negative or not less than the count of <code>Throwable</code>s in the
-     * chain
+     *                                   is negative or not less than the count of <code>Throwable</code>s in the
+     *                                   chain
      * @since 2.0
      */
     public int indexOfThrowable(Class type, int fromIndex) {
@@ -255,7 +253,7 @@ public class NestableDelegate implements Serializable {
         Throwable[] throwables = ExceptionUtils.getThrowables(this.nestable);
         if (fromIndex >= throwables.length) {
             throw new IndexOutOfBoundsException("The start index was out of bounds: "
-                + fromIndex + " >= " + throwables.length);
+                    + fromIndex + " >= " + throwables.length);
         }
         if (matchSubclasses) {
             for (int i = fromIndex; i < throwables.length; i++) {
@@ -300,10 +298,10 @@ public class NestableDelegate implements Serializable {
     /**
      * Prints the stack trace of this exception to the specified
      * writer. If the Throwable class has a <code>getCause</code>
-     * method (i.e. running on jre1.4 or higher), this method just 
+     * method (i.e. running on jre1.4 or higher), this method just
      * uses Throwable's printStackTrace() method. Otherwise, generates
-     * the stack-trace, by taking into account the 'topDown' and 
-     * 'trimStackFrames' parameters. The topDown and trimStackFrames 
+     * the stack-trace, by taking into account the 'topDown' and
+     * 'trimStackFrames' parameters. The topDown and trimStackFrames
      * are set to 'true' by default (produces jre1.4-like stack trace).
      *
      * @param out <code>PrintWriter</code> to use for output.
@@ -313,7 +311,7 @@ public class NestableDelegate implements Serializable {
         // if running on jre1.4 or higher, use default printStackTrace
         if (ExceptionUtils.isThrowableNested()) {
             if (throwable instanceof Nestable) {
-                ((Nestable)throwable).printPartialStackTrace(out);
+                ((Nestable) throwable).printPartialStackTrace(out);
             } else {
                 throwable.printStackTrace(out);
             }
@@ -337,13 +335,13 @@ public class NestableDelegate implements Serializable {
 
         // Remove the repeated lines in the stack
         if (trimStackFrames) {
-          trimStackFrames(stacks);
+            trimStackFrames(stacks);
         }
 
         synchronized (out) {
-            for (Iterator iter=stacks.iterator(); iter.hasNext();) {
+            for (Iterator iter = stacks.iterator(); iter.hasNext(); ) {
                 String[] st = (String[]) iter.next();
-                for (int i=0, len=st.length; i < len; i++) {
+                for (int i = 0, len = st.length; i < len; i++) {
                     out.println(st[i]);
                 }
                 if (iter.hasNext()) {
@@ -359,7 +357,7 @@ public class NestableDelegate implements Serializable {
      * stack frames.
      *
      * @param t The <code>Throwable</code>.
-     * @return  An array of strings describing each stack frame.
+     * @return An array of strings describing each stack frame.
      * @since 2.0
      */
     protected String[] getStackFrames(Throwable t) {
@@ -374,7 +372,7 @@ public class NestableDelegate implements Serializable {
         }
         return ExceptionUtils.getStackFrames(sw.getBuffer().toString());
     }
-    
+
     /**
      * Trims the stack frames. The first set is left untouched. The rest
      * of the frames are truncated from the bottom by comparing with
@@ -384,22 +382,22 @@ public class NestableDelegate implements Serializable {
      * @since 2.0
      */
     protected void trimStackFrames(List stacks) {
-         for (int size=stacks.size(), i=size-1; i > 0; i--) {
-             String[] curr = (String[]) stacks.get(i);
-             String[] next = (String[]) stacks.get(i-1); 
-             
-             List currList = new ArrayList(Arrays.asList(curr));
-             List nextList = new ArrayList(Arrays.asList(next));
-             ExceptionUtils.removeCommonFrames(currList, nextList);
+        for (int size = stacks.size(), i = size - 1; i > 0; i--) {
+            String[] curr = (String[]) stacks.get(i);
+            String[] next = (String[]) stacks.get(i - 1);
 
-             int trimmed = curr.length - currList.size();
-             if (trimmed > 0) {
-                 currList.add("\t... "+trimmed+" more");
-                 stacks.set(
-                     i, 
-                     currList.toArray(new String[currList.size()])
-                 );
-             }
-         }
-     }
+            List currList = new ArrayList(Arrays.asList(curr));
+            List nextList = new ArrayList(Arrays.asList(next));
+            ExceptionUtils.removeCommonFrames(currList, nextList);
+
+            int trimmed = curr.length - currList.size();
+            if (trimmed > 0) {
+                currList.add("\t... " + trimmed + " more");
+                stacks.set(
+                        i,
+                        currList.toArray(new String[currList.size()])
+                );
+            }
+        }
+    }
 }

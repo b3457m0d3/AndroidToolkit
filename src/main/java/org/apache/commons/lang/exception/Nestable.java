@@ -1,13 +1,11 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * Copyright (c) 2014 eLedge.net and the original author or authors.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,12 +26,12 @@ import java.io.PrintWriter;
  * @author <a href="mailto:knielsen@apache.org">Kasper Nielsen</a>
  * @author <a href="mailto:steven@caswell.name">Steven Caswell</a>
  * @author Pete Gieser
- * @since 1.0
  * @version $Id: Nestable.java 512889 2007-02-28 18:18:20Z dlr $
+ * @since 1.0
  */
 @SuppressWarnings("rawtypes")
 public interface Nestable {
-    
+
     /**
      * Returns the reference to the exception or error that caused the
      * exception implementing the <code>Nestable</code> to be thrown.
@@ -55,12 +53,12 @@ public interface Nestable {
      * of <code>Throwable</code>s at the specified index, numbered from 0.
      *
      * @param index the index of the <code>Throwable</code> in the chain of
-     * <code>Throwable</code>s
+     *              <code>Throwable</code>s
      * @return the error message, or null if the <code>Throwable</code> at the
      * specified index in the chain does not contain a message
      * @throws IndexOutOfBoundsException if the <code>index</code> argument is
-     * negative or not less than the count of <code>Throwable</code>s in the
-     * chain
+     *                                   negative or not less than the count of <code>Throwable</code>s in the
+     *                                   chain
      */
     public String getMessage(int index);
 
@@ -81,11 +79,11 @@ public interface Nestable {
      * <code>Throwable</code>s at the specified index, numbered from 0.
      *
      * @param index the index, numbered from 0, of the <code>Throwable</code> in
-     * the chain of <code>Throwable</code>s
+     *              the chain of <code>Throwable</code>s
      * @return the <code>Throwable</code>
      * @throws IndexOutOfBoundsException if the <code>index</code> argument is
-     * negative or not less than the count of <code>Throwable</code>s in the
-     * chain
+     *                                   negative or not less than the count of <code>Throwable</code>s in the
+     *                                   chain
      */
     public Throwable getThrowable(int index);
 
@@ -110,14 +108,14 @@ public interface Nestable {
      * Returns the index, numbered from 0, of the first occurrence of the
      * specified type, or a subclass, in the chain of <code>Throwable</code>s.
      * The method returns -1 if the specified type is not found in the chain.
-     * <p>
+     * <p/>
      * NOTE: From v2.1, we have clarified the <code>Nestable</code> interface
      * such that this method matches subclasses.
      * If you want to NOT match subclasses, please use
      * {@link ExceptionUtils#indexOfThrowable(Throwable, Class)}
      * (which is avaiable in all versions of lang).
      *
-     * @param type  the type to find, subclasses match, null returns -1
+     * @param type the type to find, subclasses match, null returns -1
      * @return index of the first occurrence of the type in the chain, or -1 if
      * the type is not found
      */
@@ -128,21 +126,21 @@ public interface Nestable {
      * that matches the specified type, or a subclass, in the chain of <code>Throwable</code>s
      * with an index greater than or equal to the specified index.
      * The method returns -1 if the specified type is not found in the chain.
-     * <p>
+     * <p/>
      * NOTE: From v2.1, we have clarified the <code>Nestable</code> interface
      * such that this method matches subclasses.
      * If you want to NOT match subclasses, please use
      * {@link ExceptionUtils#indexOfThrowable(Throwable, Class, int)}
      * (which is avaiable in all versions of lang).
      *
-     * @param type  the type to find, subclasses match, null returns -1
+     * @param type      the type to find, subclasses match, null returns -1
      * @param fromIndex the index, numbered from 0, of the starting position in
-     * the chain to be searched
+     *                  the chain to be searched
      * @return index of the first occurrence of the type in the chain, or -1 if
      * the type is not found
      * @throws IndexOutOfBoundsException if the <code>fromIndex</code> argument
-     * is negative or not less than the count of <code>Throwable</code>s in the
-     * chain
+     *                                   is negative or not less than the count of <code>Throwable</code>s in the
+     *                                   chain
      */
     public int indexOfThrowable(Class type, int fromIndex);
 
@@ -175,5 +173,5 @@ public interface Nestable {
      * @param out The writer to use.
      */
     public void printPartialStackTrace(PrintWriter out);
-    
+
 }
