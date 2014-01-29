@@ -7,29 +7,28 @@ import android.widget.Toast;
 
 public class GuiUtils {
 
-	public static void toast(Context context, int text) {
-		Toast.makeText(context, text,
-				Toast.LENGTH_SHORT).show();
-	}
-	
-	public static void toast(Context context, String text) {
-		Toast.makeText(context, text,
-				Toast.LENGTH_SHORT).show();
-	}
-	
-	public static void startTopActivity(Context context, Class<? extends Activity> clazz) {
-		final Intent intent = new Intent(context, clazz);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    public static void toast(Context context, int text) {
+        Toast.makeText(context, text,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    public static void toast(Context context, String text) {
+        Toast.makeText(context, text,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    public static void startTopActivity(Context context, Class<? extends Activity> clazz) {
+        final Intent intent = new Intent(context, clazz);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		context.startActivity(intent);
-	}
-	
+        context.startActivity(intent);
+    }
+
     public static String getString(Context context, int resId) {
-       return context.getResources().getString(resId);
+        return context.getResources().getString(resId);
     }
 
     public static String format(Context context, int resId, Object... params) {
-      return String.format(getString(context, resId), params);
+        return String.format(getString(context, resId), params);
     }
-    
 }
