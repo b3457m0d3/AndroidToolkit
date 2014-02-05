@@ -59,7 +59,8 @@ public class ViewInjector {
 
     private static void injectViews(Object target, Object source, Finder finder) throws IllegalArgumentException {
         Class<?> clazz = target.getClass();
-        for (Field field : clazz.getFields()) {
+        for (Field field : clazz.getDeclaredFields()) {
+            field.setAccessible(true);
             if (field.isAnnotationPresent(ViewResource.class)) {
                 ViewResource viewResource = field.getAnnotation(ViewResource.class);
                 View view = finder.findViewById(source, viewResource.value());
