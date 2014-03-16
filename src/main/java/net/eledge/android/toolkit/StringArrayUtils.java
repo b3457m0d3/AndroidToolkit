@@ -17,7 +17,7 @@ package net.eledge.android.toolkit;
 
 import android.util.SparseArray;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

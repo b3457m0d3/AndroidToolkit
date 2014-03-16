@@ -24,7 +24,8 @@ import net.eledge.android.toolkit.StringArrayUtils;
 import net.eledge.android.toolkit.db.annotations.ModelUpdate;
 import net.eledge.android.toolkit.db.annotations.ModelUpdates;
 
-import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

@@ -24,7 +24,7 @@ import android.util.Log;
 import net.eledge.android.toolkit.db.internal.FieldType;
 import net.eledge.android.toolkit.db.internal.SQLBuilder;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
