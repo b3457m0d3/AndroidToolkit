@@ -90,9 +90,13 @@ public abstract class Dao<E> {
 
     public List<E> find(String rawQuery, String... params) {
         Cursor cursor = db.rawQuery(rawQuery, params);
-        if ((cursor != null) && (cursor.getCount() > 0)) {
-            // mapToEntities will close cursor
-            return mapToEntities(cursor);
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                // mapToEntities will close cursor
+                return mapToEntities(cursor);
+            } else {
+                cursor.close();
+            }
         }
         return new ArrayList<>();
     }
